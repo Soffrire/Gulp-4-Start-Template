@@ -47,7 +47,7 @@ const path = {
     src: srcPath + 'img/**/*.*',
     app: appPath + 'img/',
     build: buildPath + 'img/',
-    watch: srcPath + 'img/**/*/*'
+    watch: srcPath + 'img/**/*.*'
   },
   icons: {
     src: srcPath + 'img/icons/*.svg',
@@ -90,7 +90,7 @@ function html(cb) {
 }
 
 function css(cb) {
-  return src(path.css.src)
+  return src(path.css.src, {base: srcPath + 'sass/'})
     .pipe(sourcemaps.init())
     .pipe(plumber({
       errorHandler: function (err) {
@@ -171,7 +171,7 @@ function fonts(cb) {
 }
 
 function icons(cb) {
-  return src(path.icons.src)
+  return src(path.icons.src, {base: srcPath + 'img/icons/'})
     .pipe(svgo({
       js2svg: {
         pretty: true
