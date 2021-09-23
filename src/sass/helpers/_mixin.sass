@@ -1,0 +1,36 @@
+@mixin reset-btn()
+	border: none
+	background: none
+	outline: none
+	cursor: pointer
+	box-shadow: none
+
+@mixin reset-input()
+	box-shadow: none
+	outline: none
+
+@mixin overlay($color)
+	position: relative
+	z-index: 0
+
+	&:before
+		content: ''
+		z-index: -1
+		position: absolute
+		top: 0
+		bottom: 0
+		left: 50%
+		width: 100vw
+		height: 100%
+		margin: 0 0 0 (-50vw)
+		background: $color
+
+@mixin flex-center()
+	display: flex
+	align-items: center
+	justify-content: center
+
+@mixin bg-image()
+	background-position: center center
+	background-repeat: no-repeat
+	background-size: cover

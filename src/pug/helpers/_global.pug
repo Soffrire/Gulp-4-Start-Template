@@ -1,0 +1,37 @@
+mixin head(array)
+  meta(charset='UTF-8')
+  title!=array.title
+  meta(name='viewport' content='width=device-width')
+
+  //- Favicon
+  meta(name='SKYPE_TOOLBAR' content='SKYPE_TOOLBAR_PARSER_COMPATIBLE')
+  meta(name='apple-mobile-web-app-capable' content='yes')
+  meta(name="format-detection" content='telephone=no')
+  link(type="image/x-icon" href="/img/favicon/favicon.ico" rel="shortcut icon")
+  link(href='/img/favicon/apple-icon-114x114.png' rel='apple-touch-icon' sizes='114x114')
+  link(href='/img/favicon/apple-icon-120x120.png' rel='apple-touch-icon' sizes='120x120')
+  link(href='/img/favicon/apple-icon-144x144.png' rel='apple-touch-icon' sizes='144x144')
+  link(href='/img/favicon/apple-icon-152x152.png' rel='apple-touch-icon' sizes='152x152')
+  link(href='/img/favicon/apple-icon-180x180.png' rel='apple-touch-icon' sizes='180x180')
+  link(type='image/png' href='/img/favicon/android-icon-192x192.png' rel='icon' sizes='192x192')
+  link(type='image/png' href='/img/favicon/favicon-32x32.png' rel='icon' sizes='32x32')
+  link(type='image/png' href='/img/favicon/favicon-96x96.png' rel='icon' sizes='96x96')
+  link(type='image/png' href='/img/favicon/favicon-16x16.png' rel='icon' sizes='16x16')
+  link(href='/img/favicon/manifest.json' rel='manifest')
+
+  //- Style
+  link(href='/css/app.min.css' rel='stylesheet' media='all')
+
+  //- info: Файл ui.css будет автоматически удален при сборке проекта.
+  //removeIf(production)
+  link(href='/css/ui.min.css' rel='stylesheet' media='all')
+  //endRemoveIf(production)
+
+mixin scripts
+  script(src='/js/app.min.js')
+
+mixin icon(name,mod)
+  - mod = mod || ''
+
+  svg(class='icon icon-' + name + ' ' + mod)
+    use(xlink:href='#' + name)

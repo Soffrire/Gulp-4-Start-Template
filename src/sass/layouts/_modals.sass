@@ -1,0 +1,56 @@
+.modals
+	display: none
+
+.modal
+	$el: &
+	
+	padding: 30px
+	background-color: $white
+	max-width: 500px
+	box-shadow: 0 5px 15px -10px rgba(34, 60, 80, 0.7)
+
+	&--success
+
+		#{$el}
+
+			&__title
+				color: $success
+
+			&__description
+				color: $success
+
+	&--error
+
+		#{$el}
+
+			&__title
+				color: $danger
+
+			&__description
+				color: $danger
+
+	&__inner
+		position: relative
+
+	&__button-close
+		+reset-btn
+		position: absolute
+		right: -20px
+		top: -20px
+		padding: 0
+		width: 20px
+		height: 20px
+
+		&-icon
+			font-size: 14px
+			color: $black
+
+	&__title
+		text-align: center
+
+	&__body
+		margin-top: 20px
+
+	&__description
+		text-align: center
+

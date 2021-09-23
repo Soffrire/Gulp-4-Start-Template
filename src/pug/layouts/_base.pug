@@ -1,0 +1,17 @@
+include ../helpers/_include
+include ../templates/_include
+
+- var array = '';
+block vars
+
+doctype
+html(lang='ru')
+  head
+    +head(array)
+  body.body.js-body
+    +svg-script
+    +header
+    block content
+    +footer
+    +modals
+    +scripts
