@@ -6,6 +6,28 @@ block vars
 block content
 	main.page
 		.container
-			.b-home
-				h1._title.title.title--h1 Lorem ipsum.
-				._inner.-full
+			.swiper.js-slider
+				.swiper-wrapper
+					each val, index in []
+						.swiper-slide= index
+				.swiper-pagination
+				.swiper-button-prev
+				.swiper-button-next
+				.swiper-scrollbar
+
+			.swiper.js-slider-one
+				.swiper-wrapper
+					.swiper-slide 1
+					.swiper-slide 2
+					.swiper-slide 3
+					.swiper-slide 3
+					.swiper-slide 3
+					.swiper-slide 3
+					.swiper-slide 3
+					.swiper-slide 3
+					.swiper-slide 3
+				.swiper-pagination
+				.swiper-button-prev
+				.swiper-button-next
+				.swiper-scrollbar
+

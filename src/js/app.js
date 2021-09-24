@@ -1,5 +1,6 @@
 import iniApp from './init'
 
+require('./const')
 require('./vendor')
 require('./helpers')
 
