@@ -5,3 +5,210 @@ block vars
 
 block content
 	main.page
+		.container
+			.ui
+				.ui-header Colors
+				.ui-section
+					.ui-title Basic Color
+					.ui-colors
+
+						.ui-color
+							.ui-color__bg(style="background: #FBC35F")
+							.ui-color__name #FBC35F
+							.ui-color__code $yellow
+
+						.ui-color
+							.ui-color__bg(style="background: #04BAAF")
+							.ui-color__name #04BAAF
+							.ui-color__code $green
+
+						.ui-color
+							.ui-color__bg(style="background: #FC6464")
+							.ui-color__name #FC6464
+							.ui-color__code $red
+
+			.ui
+				.ui-header Buttons
+				.ui-section
+					table
+						tbody
+							tr
+								td
+									a.btn Текс на кнопке
+								td
+									button.btn(disabled) Текс на кнопке
+
+			.ui
+				.ui-header Forms
+				.ui-section
+					.ui-title Inputs Base
+					.input-group(data-input-group="name")
+						input(name="name" type="text" placeholder="Ваши ФИО").input
+						.input-group__error
+
+					.input-group(data-input-group="phone")
+						input(name="phone" type="tel" placeholder="Ваш телефон").input.js-input-phone
+						.input-group__error
+
+					.input-group.input-group--error(data-input-group="text")
+						input(name="name" type="text" placeholder="Ваши ФИО" value="ФИО").input
+						.input-group__error Некорректный номер , проверьте еще раз!
+
+					.input-group(data-input-group="text")
+						input(name="name" type="text" placeholder="Ваши ФИО" disabled).input
+						.input-group__error
+
+					.input-group(data-input-group="textarea")
+						textarea(name="name" placeholder="Ваши ФИО").input.textarea
+						.input-group__error
+
+					.ui-title Select
+					.input-group(data-input-group="checkbox")
+						.input-group__wrapper
+							.custom-select.js-custom-select
+								button.custom-select__header.js-custom-select-toggle
+									span.custom-select__selected.js-custom-select-render Тип инвестиции
+									span.custom-select__arrow
+										+icon('down', 'custom-select__arrow-icon')
+								.custom-select__body.js-custom-select-list
+									label.custom-select__option
+										input(name='test' type="checkbox" value="1")
+										span.custom-select__label Пункт 1
+									label.custom-select__option
+										input(name='test' type="checkbox" value="2")
+										span.custom-select__label Пункт 2
+									label.custom-select__option
+										input(name='test' type="checkbox" value="3")
+										span.custom-select__label Пункт 3
+									label.custom-select__option
+										input(name='test' type="checkbox" value="4")
+										span.custom-select__label Пункт 4
+									label.custom-select__option
+										input(name='test' type="checkbox" value="5")
+										span.custom-select__label Пункт 5
+									label.custom-select__option
+										input(name='test' type="checkbox" value="6")
+										span.custom-select__label Пункт 6
+						.input-group__error
+
+					.input-group(data-input-group="checkbox")
+						.input-group__wrapper
+							.custom-select.js-custom-multiple-select
+								button.custom-select__header.js-custom-select-toggle
+									span.custom-select__selected.js-custom-select-render Multiple Select
+									span.custom-select__arrow
+										+icon('down', 'custom-select__arrow-icon')
+								.custom-select__body.js-custom-select-list
+									label.custom-select__option
+										input(name='category' type="checkbox" value="1")
+										span.custom-select__label Пункт 1
+									label.custom-select__option
+										input(name='category' type="checkbox" value="2")
+										span.custom-select__label Пункт 2
+
+					.ui-title Checbox
+					.input-group(data-input-group="checkbox")
+						label.checkbox
+							input(name='checkbox' type="checkbox" value='Y' checked)
+							span.checkbox__indicator
+								+icon('check')
+							span.checkbox__description Текст
+
+					.input-group(data-input-group="checkbox")
+						label.checkbox
+							input(name='checkbox' type="checkbox" value='Y' disabled)
+							span.checkbox__indicator
+								+icon('check')
+							span.checkbox__description Текст
+
+
+					.ui-title Radiobuttons
+					.input-group(data-input-group="radio")
+						label.radio
+							input(name='radio' type="radio" value='Y' checked)
+							span.radio__indicator
+							span.radio__description Как можно быстрее
+
+					.input-group(data-input-group="radio")
+						label.radio
+							input(name='radio' type="radio" value='YN')
+							span.radio__indicator
+							span.radio__description Как можно быстрее
+
+					.input-group(data-input-group="radio")
+						label.radio
+							input(name='radio' type="radio" value='N' disabled)
+							span.radio__indicator
+							span.radio__description Доставить ко времени
+
+					form.form-default.js-form-send(style="max-width: 420px")
+						.form-default__row
+							.form-default__column
+								.input-group(data-input-group="name")
+									input(name="name" type="text" placeholder="Ваше имя").input
+									.input-group__error
+							.form-default__column
+								.input-group(data-input-group="phone")
+									input(name="phone" type="tel" placeholder="Контактный телефон").input.js-input-phone
+									.input-group__error
+
+						.input-group(data-input-group="email")
+							input(name="email" type="email" placeholder="Ваш e-mail").input
+							.input-group__error
+
+						.input-group(data-input-group="question")
+							textarea(name="question" placeholder="Напишите свой вопрос и мы свяжемся с Вами").input.textarea
+							.input-group__error
+
+						.form-default__send
+							button.btn-more.btn-more--white(type="submit")
+								span Получить коммерческое предложение
+								+icon('arrow-right')
+
+							.form-default__consent
+								label.checkbox
+									input(name='consent' type="checkbox" value='Y' checked).js-form-consent
+									span.checkbox__indicator
+										+icon('check')
+									span.checkbox__description Я даю свое согласие на
+										a(href="#" target="_blank") обработку персональных данных
+
+			.ui
+				.ui-header Navigation
+				.ui-section
+					.bread-crumbs
+						a(href="/" title="Главная").bread-crumb
+							span Главная
+						a(href="/" title="Корневой каталог").bread-crumb
+							span Корневой каталог
+						.bread-crumb Прессы чеканочные кривошипно-коленные
+
+					.pagination
+						a(href="#").pagination__control
+							+icon('arrow-left')
+						.pagination__list
+							a(href="#").pagination__link 1
+							a(href="#").pagination__link 2
+							a(href="#").pagination__link.pagination__link--current.pagination__link--not-hover 3
+							.pagination__link.pagination__link--not-hover ...
+							a(href="#").pagination__link 10
+							a(href="#").pagination__link 11
+						a(href="#").pagination__control
+							+icon('arrow-right')
+
+					button.btn(onclick="(function() { window.launchWindowPreloader(); setTimeout(function(){stopWindowPreloader()}, 2500) })()") Launch Window Preloader
+
+			.ui
+				.ui-header Typography
+				.ui-section
+
+			.ui
+				.ui-header Modals
+				.ui-section
+					table
+						tbody
+							tr
+								td
+									button.btn.js-open-modal(data-modal="#success-modal") Success Modal
+								td
+									button.btn.js-open-modal(data-modal="#error-modal") Error Modal
