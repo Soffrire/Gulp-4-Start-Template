@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars,no-unreachable */
 const {src, dest, series, parallel} = require('gulp')
 
 const gulp = require('gulp')
