@@ -1,0 +1,84 @@
+.wrap-preloader
+	position: fixed
+	top: 0
+	left: 0
+	right: 0
+	bottom: 0
+	background-color: rgba(26, 34, 41, 0.5)
+	z-index: 99999
+	display: flex
+	align-items: center
+	justify-content: center
+
+	.loader
+		position: fixed
+		top: 50%
+		left: 50%
+		transform: translateX(-50%) translateY(-50%)
+
+
+.section-preloader
+	position: relative
+
+	&__wrapper
+		position: absolute
+		top: 0
+		left: -1000px
+		right: -1000px
+		bottom: 0
+		background: transparent
+		display: flex
+		z-index: 99999
+		align-items: center
+		justify-content: center
+		pointer-events: none
+		transition: background ease .3s
+
+	.loader
+		position: relative
+		transform: scale(0)
+		transition: transform ease .3s
+
+	&--show
+
+		.section-preloader__wrapper
+			pointer-events: auto
+			background: rgba(26, 34, 41, 0.6)
+
+		.loader
+			transform: scale(1)
+
+
+$size: 10rem
+$duration: 2s
+$color: #FBC35F
+
+.loader
+	height: $size
+	width: $size
+
+	.circle
+		position: absolute
+		height: inherit
+		width: inherit
+		background: $color
+		border-radius: 50%
+		animation: animate-circle #{$duration} cubic-bezier(0.9, 0.24, 0.62, 0.79) infinite
+
+		&:nth-of-type(1)
+			animation-delay: 0
+
+		&:nth-of-type(2)
+			animation-delay: calc(#{$duration} / -3)
+
+		&:nth-of-type(3)
+			animation-delay: calc(#{$duration} / -6)
+
+@keyframes animate-circle
+	from
+		transform: scale(0)
+		opacity: 0.5
+
+	to
+		transform: scale(1)
+		opacity: 0
