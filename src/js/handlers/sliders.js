@@ -1,7 +1,7 @@
 /* eslint-disable no-new */
 import Swiper from 'swiper/swiper-bundle'
 
-export default class Slider {
+class Slider {
   constructor(selector, settings) {
     this.slider = selector
     this.settings = settings
@@ -12,3 +12,11 @@ export default class Slider {
     new Swiper(this.slider, this.settings)
   }
 }
+
+const initSliders = () => {
+  window.sliderSettings.forEach((item) => {
+    new Slider(item.class, item.settings)
+  })
+}
+
+export default initSliders
