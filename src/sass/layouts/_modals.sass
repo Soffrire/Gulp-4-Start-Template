@@ -26,21 +26,57 @@
 		animation-duration: .3s
 		animation-fill-mode: both
 
-	&--success #{$el}
+	&--message
 
-		&__title
-			color: $success
+		#{$el}
 
-		&__description
-			color: $success
+			&__title
+				color: $info
 
-	&--error #{$el}
+			&__description
+				color: $info
 
-		&__title
-			color: $danger
+			&__button-close-icon
+				color: $info
 
-		&__description
-			color: $danger
+	&--warning
+
+		#{$el}
+
+			&__title
+				color: $warning
+
+			&__description
+				color: $warning
+
+			&__button-close-icon
+				color: $warning
+
+	&--success
+
+		#{$el}
+
+			&__title
+				color: $success
+
+			&__description
+				color: $success
+
+			&__button-close-icon
+				color: $success
+
+	&--error
+
+		#{$el}
+
+			&__title
+				color: $danger
+
+			&__description
+				color: $danger
+
+			&__button-close-icon
+				color: $danger
 
 	&__inner
 		position: relative
