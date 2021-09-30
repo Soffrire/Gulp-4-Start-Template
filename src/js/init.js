@@ -1,12 +1,29 @@
 /* eslint-disable no-new */
-import Slider from './handlers/sliders'
+import addInputMaskPhone from './handlers/form-elements/phone-mask'
+import initModals from './handlers/modals'
+import initSliders from './handlers/sliders'
+import initFormSender from './handlers/form-sender'
+import CustomSelect from './handlers/form-elements/custom-select'
+import MultipleCustomSelect from './handlers/form-elements/multiple-custom-select'
 
 function iniApp() {
-	window.$body = $('.js-body')
+  window.$body = $('.js-body')
 
-  window.sliderSettings.forEach((item) => {
-    new Slider(item.class, item.settings)
+  $('.js-custom-select').each(function () {
+    new CustomSelect($(this))
   })
+
+  $('.js-custom-multiple-select').each(function () {
+    new MultipleCustomSelect($(this))
+  })
+
+  addInputMaskPhone()
+
+  initModals()
+
+  initSliders()
+
+  initFormSender()
 
 }
 
