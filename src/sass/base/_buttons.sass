@@ -1,2 +1,38 @@
 .btn
-  +reset-btn
+	+reset-btn
+	padding: 10px 20px
+
+	&--primary
+		background-color: $primary
+		color: $white
+
+		&:hover
+			background-color: lighten($primary, 5%)
+
+	&-icon
+		display: flex
+		align-items: center
+
+		&__icon
+			margin-left: 10px
+			font-size: 10px
+
+	&:disabled
+		background-color: #ccc
+		color: darken(#ccc, 20%)
+		cursor: not-allowed
+
+.link
+	color: $primary
+	text-decoration-skip-ink: none
+
+	&:hover
+		text-decoration: none
+
+	&-icon
+		display: inline-flex
+		align-items: center
+
+		&__icon
+			font-size: 10px
+			margin-left: 5px

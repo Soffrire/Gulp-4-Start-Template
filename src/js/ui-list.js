@@ -14,4 +14,4 @@ function pageWidget(pages) {
 	widgetStyle.prependTo('.widget_wrap')
 }
 
-pageWidget(['index', 'ui'])
+pageWidget(['ui', 'ui-new', 'index'])
