@@ -99,7 +99,7 @@ input:-webkit-autofill:active
 
 			~
 				.checkbox__indicator
-					background: #000000
+					background: $primary
 
 					.icon
 						transform: scale(1)
@@ -120,7 +120,7 @@ input:-webkit-autofill:active
 		height: 19px
 		width: 19px
 		min-width: 19px
-		border: 1px solid #000000
+		border: 1px solid $primary
 		display: flex
 		align-items: center
 		justify-content: center
@@ -132,7 +132,10 @@ input:-webkit-autofill:active
 			transition: transform ease .3s
 			transform: scale(0)
 			color: #ffffff !important
-			font-size: 7px
+			font-size: 11px
+			width: 100%
+			height: 100%
+			padding: 3px
 
 	&__description
 		font-size: 12px
@@ -173,11 +176,11 @@ input:-webkit-autofill:active
 						cursor: not-allowed
 
 	&__indicator
-		background: #000000
+		background: $primary
 		height: 19px
 		width: 19px
 		min-width: 19px
-		border: 1px solid #000000
+		border: 1px solid $primary
 		border-radius: 50%
 		overflow: hidden
 		position: relative
@@ -193,7 +196,7 @@ input:-webkit-autofill:active
 			background: #ffffff
 			display: block
 			position: absolute
-			transition: top ease .3s, bottom ease .3s, left ease .3s, right ease .3s,
+			transition: top ease .1s, bottom ease .1s, left ease .1s, right ease .1s,
 
 	&__description
 		font-size: 12px

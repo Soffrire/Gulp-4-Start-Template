@@ -2,7 +2,7 @@ window.sliderSettings = [
   {
     class: '.js-slider',
     settings: {
-      slidesPerView: 2,
+      slidesPerView: 4,
       navigation: {
         prevEl: '.swiper-button-prev',
         nextEl: '.swiper-button-next'

@@ -65,7 +65,7 @@ window.scrollToElement = (el = '.header') => {
 
 window.launchWindowPreloader = () => {
 	var html =
-		'<div class="wrap-preloader js-wrap-preloader"><div class="loader"><div class="circle"></div></div></div>'
+		'<div class="wrap-preloader js-wrap-preloader"><div class="loader"><div class="circle"></div><div class="circle"></div><div class="circle"></div></div></div>'
 	$('body').append(html)
 }
 

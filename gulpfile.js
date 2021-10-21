@@ -20,6 +20,8 @@ const svgo = require('gulp-svgo')
 const cheerio = require('gulp-cheerio')
 const replace = require('gulp-replace')
 const webpack = require('webpack')
+const changed = require('gulp-changed')
+const newer = require('gulp-newer');
 
 const srcPath = 'src/'
 const appPath = 'app/'
@@ -81,17 +83,18 @@ function server(cb) {
 
 function html(cb) {
   return src(path.html.src)
+    .pipe(newer(path.html.app + '*.html'))
     .pipe(pug({
       pretty: true,
       plugins: [pugbem]
     }))
     .pipe(dest(path.html.app))
-    .pipe(browserSync.reload({stream: true}))
   cb()
 }
 
 function css(cb) {
   return src(path.css.src, {base: srcPath + 'sass/'})
+    .pipe(newer(path.css.app + '*.css'))
     .pipe(sourcemaps.init())
     .pipe(plumber({
       errorHandler: function (err) {
@@ -115,12 +118,12 @@ function css(cb) {
       extname: '.css'
     }))
     .pipe(dest(path.css.app))
-    .pipe(browserSync.reload({stream: true}))
   cb()
 }
 
 function js(cb) {
   return src(path.js.src, {base: srcPath + 'js/'})
+    .pipe(newer(path.js.app + '*.js'))
     .pipe(sourcemaps.init())
     .pipe(plumber({
       errorHandler: function (err) {
@@ -155,7 +158,6 @@ function js(cb) {
       extname: '.js'
     }))
     .pipe(dest(path.js.app))
-    .pipe(browserSync.reload({stream: true}))
   cb()
 }
 
@@ -297,9 +299,9 @@ exports.build = build
 // ------------------------------ WATCHING
 
 function watchFiles() {
-  gulp.watch([path.html.watch], html)
-  gulp.watch([path.css.watch], css)
-  gulp.watch([path.js.watch], js)
+  gulp.watch(path.html.watch).on('change', gulp.series(html, browserSync.reload))
+  gulp.watch(path.css.watch).on('change', gulp.series(css, browserSync.reload))
+  gulp.watch(path.js.watch).on('change', gulp.series(js, browserSync.reload))
   gulp.watch([path.img.watch], img)
   gulp.watch([path.icons.watch], icons)
   gulp.watch([path.fonts.watch], fonts)

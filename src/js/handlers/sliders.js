@@ -1,5 +1,5 @@
 /* eslint-disable no-new */
-import Swiper from 'swiper/swiper-bundle'
+import Swiper from 'swiper/swiper-bundle.min'
 
 class Slider {
   constructor(selector, settings) {
