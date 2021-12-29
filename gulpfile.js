@@ -3,7 +3,6 @@ const {src, dest, series, parallel} = require('gulp')
 
 const gulp = require('gulp')
 const pug = require('gulp-pug')
-const pugbem = require('pug-bem')
 const sourcemaps = require('gulp-sourcemaps')
 const notify = require('gulp-notify')
 const browserSync = require('browser-sync').create()
@@ -21,7 +20,8 @@ const cheerio = require('gulp-cheerio')
 const replace = require('gulp-replace')
 const webpack = require('webpack')
 const changed = require('gulp-changed')
-const newer = require('gulp-newer');
+const newer = require('gulp-newer')
+const clean = require('gulp-clean')
 
 const srcPath = 'src/'
 const appPath = 'app/'
@@ -29,7 +29,7 @@ const buildPath = 'build/'
 
 const path = {
   html: {
-    src: srcPath + 'pug/*.pug',
+    src: srcPath + 'pug/pages/*.pug',
     app: appPath,
     build: buildPath,
     watch: srcPath + 'pug/**/*.pug'
@@ -66,10 +66,6 @@ const path = {
   }
 }
 
-pugbem.b = true
-pugbem.e = '__'
-pugbem.m = '--'
-
 function server(cb) {
   browserSync.init({
     port: 3000,
@@ -85,8 +81,7 @@ function html(cb) {
   return src(path.html.src)
     .pipe(newer(path.html.app + '*.html'))
     .pipe(pug({
-      pretty: true,
-      plugins: [pugbem]
+      pretty: true
     }))
     .pipe(dest(path.html.app))
   cb()
@@ -135,7 +130,6 @@ function js(cb) {
       }
     }))
     .pipe(webpackStream({
-      mode: 'development',
       output: {
         filename: 'app.js'
       },
@@ -209,17 +203,20 @@ function icons(cb) {
   cb()
 }
 
-exports.html = html
-exports.css = css
-exports.js = js
-exports.img = img
-exports.fonts = fonts
+function cleanBuildPath(cb) {
+  return src(buildPath, {
+    read: false
+  })
+    .pipe(clean())
+
+  cb()
+}
+
 exports.icons = icons
 exports.server = server
+exports.clean = cleanBuildPath
 
 const buildApp = gulp.series(html, css, js, img, fonts, icons)
-
-exports.buildApp = buildApp
 
 // ------------------------------ BUILDING
 
@@ -246,7 +243,6 @@ function buildJs(cb) {
   return src(path.js.app + 'app.min.js')
     .pipe(removeCode({production: true}))
     .pipe(webpackStream({
-      mode: 'production',
       output: {
         filename: 'app.min.js'
       },
@@ -292,9 +288,14 @@ function buildFonts(cb) {
   cb()
 }
 
-const build = gulp.series(buildHtml, buildCss, buildJs, buildImg, buildFonts)
+const build = gulp.series(cleanBuildPath, buildApp, buildHtml, buildCss, buildJs, buildImg, buildFonts)
 
 exports.build = build
+exports.buildHtml = buildHtml
+exports.buildCss = buildCss
+exports.buildJs = buildJs
+exports.buildImg = buildImg
+exports.buildFonts = buildFonts
 
 // ------------------------------ WATCHING
 
@@ -302,9 +303,9 @@ function watchFiles() {
   gulp.watch(path.html.watch).on('change', gulp.series(html, browserSync.reload))
   gulp.watch(path.css.watch).on('change', gulp.series(css, browserSync.reload))
   gulp.watch(path.js.watch).on('change', gulp.series(js, browserSync.reload))
-  gulp.watch([path.img.watch], img)
-  gulp.watch([path.icons.watch], icons)
-  gulp.watch([path.fonts.watch], fonts)
+  gulp.watch(path.img.watch).on('change', gulp.series(img, browserSync.reload))
+  gulp.watch(path.icons.watch).on('change', gulp.series(icons, browserSync.reload))
+  gulp.watch(path.fonts.watch).on('change', gulp.series(fonts, browserSync.reload))
 }
 
 const watch = gulp.series(buildApp, server, watchFiles)

@@ -1,4 +1,5 @@
 /* eslint-disable no-new */
+import './sliders-settings'
 import Swiper from 'swiper/swiper-bundle.min'
 
 class Slider {
