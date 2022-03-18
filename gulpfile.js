@@ -21,7 +21,7 @@ const replace = require('gulp-replace')
 const webpack = require('webpack')
 const changed = require('gulp-changed')
 const newer = require('gulp-newer')
-const clean = require('gulp-clean')
+const del = require('del')
 
 const srcPath = 'src/'
 const appPath = 'app/'
@@ -47,7 +47,7 @@ const path = {
     watch: srcPath + 'js/**/*.js'
   },
   img: {
-    src: srcPath + 'img/**/*.*',
+    src: srcPath + 'img/**/*.{png}',
     app: appPath + 'img/',
     build: buildPath + 'img/',
     watch: srcPath + 'img/**/*.*'
@@ -63,6 +63,10 @@ const path = {
     app: appPath + 'fonts/',
     build: buildPath + 'fonts/',
     watch: srcPath + 'fonts/**/*.{eot,woff,woff2,ttf,svg}'
+  },
+  clean: {
+    app: './' + appPath,
+    build: './' + buildPath
   }
 }
 
@@ -158,6 +162,7 @@ function js(cb) {
 function img(cb) {
   return src(path.img.src, {base: srcPath + 'img/'})
     .pipe(dest(path.img.app))
+    .pipe(browserSync.reload({stream: true}))
   cb()
 }
 
@@ -203,20 +208,22 @@ function icons(cb) {
   cb()
 }
 
-function cleanBuildPath(cb) {
-  return src(buildPath, {
-    read: false
-  })
-    .pipe(clean())
+function clean(cb) {
+  return del(path.clean.app, path.clean.build);
 
-  cb()
+  cb();
 }
 
+exports.html = html
+exports.css = css
+exports.js = js
+exports.img = img
+exports.fonts = fonts
 exports.icons = icons
 exports.server = server
-exports.clean = cleanBuildPath
+exports.clean = clean
 
-const buildApp = gulp.series(html, css, js, img, fonts, icons)
+const buildApp = gulp.series(clean, html, css, js, img, fonts, icons)
 
 // ------------------------------ BUILDING
 
@@ -288,7 +295,7 @@ function buildFonts(cb) {
   cb()
 }
 
-const build = gulp.series(cleanBuildPath, buildApp, buildHtml, buildCss, buildJs, buildImg, buildFonts)
+const build = gulp.series(clean, buildApp, buildHtml, buildCss, buildJs, buildImg, buildFonts)
 
 exports.build = build
 exports.buildHtml = buildHtml

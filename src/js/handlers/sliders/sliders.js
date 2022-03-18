@@ -2,6 +2,8 @@
 import './sliders-settings'
 import Swiper from 'swiper/swiper-bundle.min'
 
+const sliders = window.sliderSettings
+
 class Slider {
   constructor(selector, settings) {
     this.slider = selector
@@ -15,7 +17,7 @@ class Slider {
 }
 
 const initSliders = () => {
-  window.sliderSettings.forEach((item) => {
+  sliders.forEach((item) => {
     new Slider(item.class, item.settings)
   })
 }

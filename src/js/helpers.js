@@ -82,6 +82,6 @@ window.showDevelopers = () => {
 		}
 	}
 
-	const data = [new Person('Василий Коркин', 'front-end, back-end', 'v.ivan.korkin@gmail.com')]
+	const data = [new Person('Столяров Герман', 'front-end', 'Ger6450@gmail.com')]
 	console.table(data)
 }
