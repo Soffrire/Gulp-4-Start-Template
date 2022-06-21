@@ -1,5 +1,5 @@
-/* eslint-disable no-unused-vars,no-unreachable */
-const {src, dest, series, parallel} = require('gulp')
+/* eslint-disable no-unreachable */
+const { src, dest, series, parallel } = require('gulp')
 
 const gulp = require('gulp')
 const pug = require('gulp-pug')
@@ -21,6 +21,7 @@ const webpack = require('webpack')
 const changed = require('gulp-changed')
 const newer = require('gulp-newer')
 const del = require('del')
+const fonter = require('gulp-fonter')
 
 const srcPath = 'src/'
 const appPath = 'app/'
@@ -91,11 +92,11 @@ function html(cb) {
 }
 
 function css(cb) {
-  return src(path.css.src, {base: srcPath + 'sass/'})
+  return src(path.css.src, { base: srcPath + 'sass/' })
     .pipe(newer(path.css.app + '*.css'))
     .pipe(sourcemaps.init())
     .pipe(plumber({
-      errorHandler: function (err) {
+      errorHandler: function(err) {
         notify.onError({
           title: 'SASS Error',
           message: 'Error <%= error.message %>'
@@ -120,11 +121,11 @@ function css(cb) {
 }
 
 function js(cb) {
-  return src(path.js.src, {base: srcPath + 'js/'})
+  return src(path.js.src, { base: srcPath + 'js/' })
     .pipe(newer(path.js.app + '*.js'))
     .pipe(sourcemaps.init())
     .pipe(plumber({
-      errorHandler: function (err) {
+      errorHandler: function(err) {
         notify.onError({
           title: 'JS Error',
           message: 'Error: <%= error.message %>'
@@ -159,20 +160,26 @@ function js(cb) {
 }
 
 function img(cb) {
-  return src(path.img.src, {base: srcPath + 'img/'})
+  return src(path.img.src, { base: srcPath + 'img/' })
     .pipe(dest(path.img.app))
-    .pipe(browserSync.reload({stream: true}))
+    .pipe(browserSync.reload({ stream: true }))
   cb()
 }
 
 function fonts(cb) {
-  return src(path.fonts.src, {base: srcPath + 'fonts/'})
+  return src(path.fonts.src, { base: srcPath + 'fonts/' })
+    // todo: использовать если лень конвертировать вручную.
+    // .pipe(fonter({
+    //   ubset: [66, 67, 68, 69, 70, 71],
+    //   combinePath: true,
+    //   formats: ['ttf', 'eot', 'woff']
+    // }))
     .pipe(dest(path.fonts.app))
   cb()
 }
 
 function icons(cb) {
-  return src(path.icons.src, {base: srcPath + 'img/icons/'})
+  return src(path.icons.src, { base: srcPath + 'img/icons/' })
     .pipe(svgo({
       js2svg: {
         pretty: true
@@ -181,12 +188,12 @@ function icons(cb) {
       removeEmptyAttrs: true
     }))
     .pipe(cheerio({
-      run: function ($) {
+      run: function($) {
         $('[fill]').removeAttr('fill')
         $('[stroke]').removeAttr('stroke')
         $('[style]').removeAttr('style')
       },
-      parserOptions: {xmlMode: true}
+      parserOptions: { xmlMode: true }
     }))
     .pipe(replace('&gt;', '>'))
     .pipe(svgSprite({
@@ -208,15 +215,15 @@ function icons(cb) {
 }
 
 function cleanApp(cb) {
-  return del(path.clean.app);
+  return del(path.clean.app)
 
-  cb();
+  cb()
 }
 
 function cleanBuild(cb) {
-  return del(path.clean.build);
+  return del(path.clean.build)
 
-  cb();
+  cb()
 }
 
 exports.html = html
@@ -241,7 +248,6 @@ function buildHtml(cb) {
 }
 
 function buildCss(cb) {
-  gulp.series(css)
   return src(path.css.app + 'app.min.css')
     .pipe(cssnano({
       zindex: false,
@@ -307,11 +313,11 @@ function buildFonts(cb) {
 const build = gulp.series(cleanBuild, buildApp, buildHtml, buildCss, buildJs, buildImg, buildFonts)
 
 exports.build = build
-exports.buildHtml = buildHtml
-exports.buildCss = buildCss
-exports.buildJs = buildJs
-exports.buildImg = buildImg
-exports.buildFonts = buildFonts
+exports.buildHtml = gulp.series(html, buildHtml)
+exports.buildCss = gulp.series(css, buildCss)
+exports.buildJs = gulp.series(js, buildJs)
+exports.buildImg = gulp.series(img, buildImg)
+exports.buildFonts = gulp.series(fonts, buildFonts)
 
 // ------------------------------ WATCHING
 

@@ -1,20 +1,19 @@
 .custom-select
-	$el: &
+	$select: &
 	max-width: 100%
 	position: relative
 
-	&--open #{$el}
+	&--open
 
-			&__arrow
+		#{$select}
+			&__arrow .icon
+				transform: rotate(180deg)
 
-				.icon
-					transform: rotate(180deg)
-
-			&__body
-				box-shadow: 0 3px 6px rgba(0, 0, 0, 0.21)
-				transform: translateY(0px)
-				opacity: 1
-				pointer-events: auto
+		#{$select}__body
+			box-shadow: 0 3px 6px rgba(0, 0, 0, 0.21)
+			transform: translateY(0px)
+			opacity: 1
+			pointer-events: auto
 
 	&__header
 		background: #ffffff
@@ -84,5 +83,5 @@
 
 		&:checked
 			~
-				#{$el}__label
+				#{$select}__label
 					background: #F6F7F9

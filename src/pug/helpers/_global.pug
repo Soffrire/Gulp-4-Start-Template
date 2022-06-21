@@ -9,7 +9,7 @@ mixin head(array)
 		]
 
 	each fontName in fonts
-		link(rel='preload' href=`/fonts/${fontName}/${fontName}.ttf` as='font' type='font/ttf' crossorigin)
+		link(rel='preload' href=`/fonts/${fontName}/${fontName}.ttf` as='font' type='font/ttf' crossorigin='anonymous')
 
 	//- Favicon
 	meta(name='SKYPE_TOOLBAR' content='SKYPE_TOOLBAR_PARSER_COMPATIBLE')
