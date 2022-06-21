@@ -10,7 +10,6 @@ const sass = require('gulp-sass')(require('sass'))
 const cssnano = require('gulp-cssnano')
 const autoprefixer = require('gulp-autoprefixer')
 const rename = require('gulp-rename')
-const removeCode = require('gulp-remove-code')
 const plumber = require('gulp-plumber')
 const uglify = require('gulp-uglify')
 const webpackStream = require('webpack-stream')
@@ -47,7 +46,7 @@ const path = {
     watch: srcPath + 'js/**/*.js'
   },
   img: {
-    src: srcPath + 'img/**/*.{png}',
+    src: srcPath + 'img/**/*.*',
     app: appPath + 'img/',
     build: buildPath + 'img/',
     watch: srcPath + 'img/**/*.*'
@@ -208,8 +207,14 @@ function icons(cb) {
   cb()
 }
 
-function clean(cb) {
-  return del(path.clean.app, path.clean.build);
+function cleanApp(cb) {
+  return del(path.clean.app);
+
+  cb();
+}
+
+function cleanBuild(cb) {
+  return del(path.clean.build);
 
   cb();
 }
@@ -221,20 +226,22 @@ exports.img = img
 exports.fonts = fonts
 exports.icons = icons
 exports.server = server
-exports.clean = clean
+exports.cleanApp = cleanApp
+exports.cleanBuild = cleanBuild
 
-const buildApp = gulp.series(clean, html, css, js, img, fonts, icons)
+const buildApp = gulp.series(cleanApp, html, css, js, img, fonts, icons)
 
 // ------------------------------ BUILDING
 
 function buildHtml(cb) {
-  return src([path.html.app + '*.html', '!' + path.html.app + 'ui.html'])
-    .pipe(removeCode({production: true}))
+  gulp.series(html)
+  return src([path.html.app + '*.html'])
     .pipe(dest(path.html.build))
   cb()
 }
 
 function buildCss(cb) {
+  gulp.series(css)
   return src(path.css.app + 'app.min.css')
     .pipe(cssnano({
       zindex: false,
@@ -247,8 +254,8 @@ function buildCss(cb) {
 }
 
 function buildJs(cb) {
+  gulp.series(js)
   return src(path.js.app + 'app.min.js')
-    .pipe(removeCode({production: true}))
     .pipe(webpackStream({
       output: {
         filename: 'app.min.js'
@@ -284,18 +291,20 @@ function buildJs(cb) {
 }
 
 function buildImg(cb) {
+  gulp.series(img)
   return src(path.img.app + '**/*.*')
     .pipe(dest(path.img.build))
   cb()
 }
 
 function buildFonts(cb) {
+  gulp.series(fonts)
   return src(path.fonts.app + '**/*.*')
     .pipe(dest(path.fonts.build))
   cb()
 }
 
-const build = gulp.series(clean, buildApp, buildHtml, buildCss, buildJs, buildImg, buildFonts)
+const build = gulp.series(cleanBuild, buildApp, buildHtml, buildCss, buildJs, buildImg, buildFonts)
 
 exports.build = build
 exports.buildHtml = buildHtml

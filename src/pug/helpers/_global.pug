@@ -30,11 +30,6 @@ mixin head(array)
 	//- Style
 	link(href='/css/app.min.css' rel='stylesheet' media='all')
 
-	//- info: Файл ui.css будет автоматически удален при сборке проекта.
-	//removeIf(production)
-	link(href='/css/ui.min.css' rel='stylesheet' media='all')
-	//endRemoveIf(production)
-
 mixin scripts
 	script(src='/js/app.min.js')
 

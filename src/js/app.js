@@ -1,4 +1,4 @@
-import iniApp from './init'
+import initApp from './init'
 
 require('./vendor')
 require('./helpers')
@@ -6,4 +6,4 @@ require('./helpers')
 // todo: Удалить перед сборкой (build) проекта.
 require('./widget')
 
-iniApp()
+initApp()
