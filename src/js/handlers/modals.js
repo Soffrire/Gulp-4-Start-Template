@@ -1,3 +1,7 @@
+import { Fancybox } from '@fancyapps/ui'
+
+window.Fancybox = Fancybox
+
 /* eslint-disable no-undef */
 window.openModal = name => {
   $.magnificPopup.open({
@@ -59,6 +63,17 @@ const modalHandler = {
 
   event_handler() {
     const self = this
+
+    Fancybox.bind(`[data-fancybox]`, {
+      // Your options go here
+    })
+
+    $(document).on('click', '.js-modal-open', function () {
+
+      const modalId = $(this).attr('data-src')
+
+      Fancybox.show([{ src: modalId, type: "inline" }]);
+    })
 
     $(document).on('click', '.js-close-modal', function () {
       self.close_modal()
