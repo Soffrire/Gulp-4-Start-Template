@@ -1,0 +1,11 @@
+@use 'sass:math';
+
+@import 'vendor/_include';
+@import 'helpers/_include';
+@import 'base/_include';
+@import 'components/_include';
+@import 'pages/_include';
+@import 'layouts/_include';
+
+// todo: Удалить перед сборкой (build) проекта.
+@import 'custom/style';

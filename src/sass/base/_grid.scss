@@ -1,0 +1,20 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+}
+
+
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  transition: padding-left .3s ease, padding-right .3s ease;
+
+  @include max-screen(1440px) {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+}

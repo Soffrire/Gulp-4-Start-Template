@@ -1,0 +1,38 @@
+.bread-crumbs {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 30px 0 50px;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  overflow-x: auto;
+}
+
+.bread-crumb {
+  color: #000;
+  font-size: 12px;
+  text-decoration: none;
+  font-family: $ff;
+  line-height: 18px;
+  white-space: nowrap;
+
+  &:after {
+    content: '-';
+    padding-left: 6px;
+    padding-right: 6px;
+    text-decoration: none !important;
+  }
+
+  &:not(a) {
+    color: #848E99;
+
+    &:after {
+      display: none
+    }
+
+  }
+
+  &:hover span {
+    text-decoration: underline;
+  }
+}

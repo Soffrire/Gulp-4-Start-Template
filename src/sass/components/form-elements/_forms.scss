@@ -1,0 +1,46 @@
+.form-default {
+
+  &__row {
+    display: flex;
+    margin: 0 -8px;
+  }
+
+  &__column {
+    width: calc(100% / 2 - 16px);
+    margin: 0 8px;
+  }
+
+  .input-group {
+    margin-bottom: 27px;
+  }
+
+  &__send {
+    margin-top: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    button {
+      margin-right: 50px;
+
+      span {
+        white-space: nowrap;
+      }
+
+    }
+  }
+
+  &__consent {
+    display: flex;
+    align-items: center;
+
+    a {
+      color: #000000;
+
+      &:hover {
+        text-decoration: none;
+      }
+
+    }
+  }
+}
