@@ -36,7 +36,7 @@ const path = {
     watch: srcPath + 'pug/**/*.pug'
   },
   css: {
-    src: srcPath + 'sass/*.sass',
+    src: srcPath + 'sass/*.{sass,scss}',
     app: appPath + 'css/',
     build: buildPath + 'css/',
     watch: srcPath + 'sass/**/*.{sass,scss}'
@@ -71,11 +71,23 @@ const path = {
   }
 }
 
+const devMode = cb => {
+  isDev = true
+
+  cb()
+}
+
+const prodMode = cb => {
+  isDev = false
+
+  cb()
+}
+
 const server = cb => {
   browserSync.init({
     port: 3000,
     server: {
-      baseDir: appPath
+      baseDir: isDev ? appPath : buildPath
     },
     notify: false
   })
@@ -181,6 +193,13 @@ const fonts = cb => {
   cb()
 }
 
+const spriteSettings = {
+  spritePath: '../sprite.svg',
+  styleSptitePath: '../../../sass/base/_sprite.scss',
+  templateForSprite: srcPath + 'sass/helpers/_sprite_template.scss',
+  destFilesPath: srcPath + 'img/sprite/'
+}
+
 const icons = cb => {
   return src(path.icons.src, { base: srcPath + 'img/icons/' })
     .pipe(svgo({
@@ -202,18 +221,18 @@ const icons = cb => {
     .pipe(svgSprite({
       mode: {
         symbol: {
-          sprite: '../sprite.svg',
+          sprite: spriteSettings.spritePath,
           render: {
             scss: {
-              dest: '../../../sass/base/_sprite.scss',
-              template: srcPath + 'sass/helpers/_sprite_template.scss'
+              dest: spriteSettings.styleSptitePath,
+              template: spriteSettings.templateForSprite
             }
           },
           example: true
         }
       }
     }))
-    .pipe(dest(srcPath + 'img/sprite/'))
+    .pipe(dest(spriteSettings.destFilesPath))
 
   cb()
 }
@@ -239,14 +258,10 @@ exports.icons = icons
 exports.server = server
 exports.cleanApp = cleanApp
 exports.cleanBuild = cleanBuild
+exports.devMode = devMode
+exports.prodMode = prodMode
 
-const buildApp = cb => {
-  isDev = true
-
-  gulp.series(cleanApp, html, css, js, img, fonts, icons)
-
-  cb()
-}
+const buildApp = gulp.series(cleanApp, devMode, html, css, js, img, fonts, icons)
 
 // ------------------------------ BUILDING
 
@@ -328,11 +343,7 @@ const buildFonts = cb => {
   cb()
 }
 
-const build = () => {
-  isDev = false
-
-  gulp.series(cleanBuild, buildApp, buildHtml, buildCss, buildJs, buildImg, buildFonts)
-}
+const build = gulp.series(cleanBuild, buildApp, prodMode, buildHtml, buildCss, buildJs, buildImg, buildFonts)
 
 exports.build = build
 exports.buildHtml = gulp.series(html, buildHtml)
@@ -353,6 +364,8 @@ const watchFiles = () => {
 }
 
 const watch = gulp.series(buildApp, server, watchFiles)
+const watchBuild = gulp.series(build, server)
 
 exports.watch = watch
+exports.watchBuild = watchBuild
 exports.default = watch

@@ -7,6 +7,7 @@ const slider = {
     this.slider = '.js-slider'
     this.createSlider()
   },
+
   createSlider() {
     new Swiper(this.slider, {
       slidersPerView: 2
