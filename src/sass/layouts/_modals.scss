@@ -1,10 +1,6 @@
-// Override Magnific Popup Styles
-.mfp-close {
-  display: none !important;
-}
-
-.mfp-bg {
-  background: rgba(0, 0, 0, 0.5);
+// Override Fancybox
+.carousel__button.is-close {
+  display: none;
 }
 
 // Layout modals style
@@ -15,6 +11,7 @@
 .modal {
   $modal: &;
 
+  display: flex;
   cursor: default !important;
   padding: 30px;
   background-color: #fff;
@@ -95,7 +92,7 @@
       &__title,
       &__description,
       &__button-close-icon {
-        color: lightblue;
+        color: black;
       }
     }
   }

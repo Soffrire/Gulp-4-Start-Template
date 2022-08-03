@@ -4,6 +4,11 @@
   &__error {
     color: #FC6464;
     font-size: 12px;
+
+    &:empty {
+      display: none;
+    }
+
   }
 
   &--error {

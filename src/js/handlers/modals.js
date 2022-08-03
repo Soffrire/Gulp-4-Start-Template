@@ -1,157 +1,141 @@
+/* eslint-disable */
+// info: Документация Fancybox https://fancyapps.com/docs/ui/quick-start/
+
 import { Fancybox } from '@fancyapps/ui'
+import ru from '@fancyapps/ui/src/Fancybox/l10n/ru'
 
-window.Fancybox = Fancybox
+Fancybox.defaults.l10n = ru
 
-/* eslint-disable no-undef */
 window.openModal = name => {
-  $.magnificPopup.open({
-    items: {
-      src: name
-    },
-    removalDelay: 300,
-    mainClass: 'mfp-fade',
-    fixedContentPos: true,
-    callbacks: {
-      beforeOpen: function () {
-        $(name)
-          .addClass('fade-in-up')
-          .removeClass('fade-out-up')
-      },
-      beforeClose: function () {
-        $(name)
-          .addClass('fade-out-up')
-          .removeClass('fade-in-up')
-      }
-    }
-  })
-
-  return false
+  Fancybox.show([{
+    src: name,
+    type: 'inline',
+  }])
 }
 
 window.closeModal = () => {
-  $.magnificPopup.close()
+  Fancybox.close()
 }
 
 window.message = content => {
   const title = content.title ? content.title : ''
   const description = content.description ? content.description : ''
+
   $('.js-message-modal-title').html(title)
   $('.js-message-modal-description').html(description)
-  openModal('#message-modal')
-}
 
-window.messageError = content => {
-  const title = content.title ? content.title : ''
-  const description = content.description ? content.description : ''
-  $('.js-error-modal-title').html(title)
-  $('.js-error-modal-description').html(description)
-  openModal('#error-modal')
+  openModal('#message-modal')
 }
 
 window.messageSuccess = content => {
   const title = content.title ? content.title : ''
   const description = content.description ? content.description : ''
+
   $('.js-success-modal-title').html(title)
   $('.js-success-modal-description').html(description)
+
   openModal('#success-modal')
 }
 
-const modalHandler = {
+window.messageError = content => {
+  const title = content.title ? content.title : ''
+  const description = content.description ? content.description : ''
+
+  $('.js-error-modal-title').html(title)
+  $('.js-error-modal-description').html(description)
+
+  openModal('#error-modal')
+}
+
+const modal = {
   init() {
-    this.event_handler()
+    this.eventListeners()
   },
 
-  event_handler() {
-    const self = this
+  eventListeners() {
 
-    Fancybox.bind(`[data-fancybox]`, {
-      // Your options go here
-    })
+    $(document).on('click', '.js-open-modal', event => {
+      const modalId = $(event.target).data('modal')
 
-    $(document).on('click', '.js-modal-open', function () {
-
-      const modalId = $(this).attr('data-src')
-
-      Fancybox.show([{ src: modalId, type: "inline" }]);
-    })
-
-    $(document).on('click', '.js-close-modal', function () {
-      self.close_modal()
-    })
-
-    $(document).on('click', '.js-open-modal', function () {
-      const id = $(this).data('modal')
-
-      if (id)
-        openModal(id)
+      if (modalId)
+        openModal(modalId)
 
       return false
     })
 
-    $(document).on('click', '.js-video-modal', function () {
-      const src = $(this).data('video')
-      $.magnificPopup.open({
-        items: {
-          src: src
-        },
-        disableOn: 700,
-        type: 'iframe',
-        removalDelay: 300,
-        mainClass: 'mfp-fade'
-      })
+    $(document).on('click', '.js-close-modal', () => {
+      closeModal()
 
       return false
     })
-  },
 
-  close_modal() {
-    $.magnificPopup.close()
   }
 }
 
-const modalGallery = {
+const modalPhoto = {
   init() {
-    this.event_handler()
+    this.$el = $('.js-modal-photo')
+    this.eventListener()
   },
 
-  event_handler() {
-    $('.js-modal-gallery').each(function () {
-      $(this).magnificPopup({
-        delegate: '.js-modal-gallery-photo',
-        type: 'image',
-        tLoading: 'Загрузка изображения #%curr%...',
-        mainClass: 'mfp-fade modal-gallery',
-        gallery: {
-          enabled: true,
-          navigateByImgClick: true,
-          preload: [0, 1],
-          arrowMarkup:
-            '<div class="modal-gallery__arrow modal-gallery__arrow-%dir% js-modal-gallery-arrow"><svg class="icon icon-%dir% modal-gallery__arrow-icon"><use xlink:href="#%dir%"></use></svg><div>'
-        },
-        image: {
-          tError:
-            '<a href=" % url % ">Изображение #%curr%</a> не может быть загружено.',
-          titleSrc: function (item) {
-            return item.el.attr('title')
-          }
-        }
-      })
-    })
+  eventListener() {
+    this.$el.attr('data-fancybox', '')
 
-    $('.js-modal-photo').magnificPopup({
-      type: 'image',
-      closeOnContentClick: true,
-      image: {
-        verticalFit: false
+    Fancybox.bind('[data-fancybox]', {
+      Image: {
+        zoom: false
       },
-      mainClass: 'mfp-fade modal-gallery'
+      Toolbar: {
+        display: [
+          { id: 'counter', position: 'left' },
+          'close'
+        ]
+      }
     })
+  }
+}
+
+class ModalGallery {
+  constructor() {
+    this.itemClass = '.js-gallery-modal-photo'
+    this.eventListener()
+  }
+
+  eventListener() {
+    Fancybox.bind(this.itemClass, {
+      groupAll: true,
+      Image: {
+        zoom: false
+      },
+      showClass: 'zoomIn',
+      hideClass: 'zoomOut',
+      Toolbar: {
+        display: [
+          { id: 'counter', position: 'left' },
+          'close'
+        ]
+      }
+    })
+  }
+}
+
+class ModalVideo {
+  constructor($wrapper) {
+    this.$wrapper = $wrapper
   }
 }
 
 const initModals = () => {
-  modalHandler.init()
-  modalGallery.init()
+  modal.init()
+  modalPhoto.init()
+
+  $('.js-gallery-modal').each(function() {
+    new ModalGallery()
+  })
+
+  $('.js-modal-video').each(function() {
+    new ModalVideo($(this))
+  })
 }
 
 export default initModals

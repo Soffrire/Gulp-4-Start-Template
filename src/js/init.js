@@ -1,6 +1,6 @@
 /* eslint-disable no-new */
 import addInputMaskPhone from './handlers/form-elements/phone-mask'
-import initModals from './handlers/modal'
+import initModals from './handlers/modals'
 import initSliders from './handlers/sliders'
 import initFormSender from './handlers/form-elements/form-sender'
 import CustomSelect from './handlers/form-elements/custom-select'

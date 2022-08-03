@@ -21,6 +21,7 @@ const webpack = require('webpack')
 const changed = require('gulp-changed')
 const newer = require('gulp-newer')
 const del = require('del')
+const diffableHtml = require('gulp-diffable-html')
 
 let isDev = true
 
@@ -268,6 +269,7 @@ const buildApp = gulp.series(cleanApp, devMode, html, css, js, img, fonts, icons
 const buildHtml = cb => {
   gulp.series(html)
   return src([path.html.app + '*.html'])
+    .pipe(diffableHtml())
     .pipe(dest(path.html.build))
 
   cb()

@@ -39,6 +39,26 @@ block content
 									button.btn(disabled) Текс на кнопке
 
 			.ui
+				.ui-header Gallery
+				.ui-section
+					.gallery.js-gallery-modals
+						a.gallery__item.js-gallery-modals-photo(data-fancybox="gallery" href='https://lipsum.app/id/60/1600x1200')
+							img.gallery__image(src='https://lipsum.app/id/60/1600x1200' alt='')
+						a.gallery__item.js-gallery-modals-photo(data-fancybox="gallery" href='https://lipsum.app/id/61/1600x1200')
+							img.gallery__image(src='https://lipsum.app/id/61/1600x1200' alt='')
+						a.gallery__item.js-gallery-modals-photo(data-fancybox="gallery" href='https://lipsum.app/id/62/1600x1200')
+							img.gallery__image(src='https://lipsum.app/id/62/1600x1200' alt='')
+						a.gallery__item.js-gallery-modals-photo(data-fancybox="gallery" href='https://lipsum.app/id/63/1600x1200')
+							img.gallery__image(src='https://lipsum.app/id/63/1600x1200' alt='')
+
+				.ui-header Gallery Single
+				.ui-section
+					a.modal-photo.js-modal-photo(href='https://lipsum.app/id/63/1600x1200' style='margin-right: 20px')
+						img.modal-photo__image(src='https://lipsum.app/id/63/1600x1200' alt='')
+					a.modal-photo.js-modal-photo(href='https://lipsum.app/id/61/1600x1200')
+						img.modal-photo__image(src='https://lipsum.app/id/61/1600x1200' alt='')
+
+			.ui
 				.ui-header Forms
 				.ui-section
 					.ui-title Inputs Base
