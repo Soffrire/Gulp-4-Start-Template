@@ -1,0 +1,26 @@
+.btn {
+  @include reset-btn;
+
+  border: 1px dashed #ccc;
+  padding: 10px 15px;
+}
+
+
+
+.btn-more {
+  @include reset-btn;
+
+  width: 100%;
+  background-color: #04BAAF;
+  padding: 10px 15px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: .3s ease;
+
+  &:hover {
+    background-color: darken(#04BAAF, 10%);
+  }
+}

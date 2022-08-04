@@ -96,13 +96,19 @@ const modalPhoto = {
 }
 
 class ModalGallery {
-  constructor() {
-    this.itemClass = '.js-gallery-modal-photo'
+  constructor($wrapper) {
+    this.$wrapper = $wrapper
+    this.$item = this.$wrapper.find('.js-gallery-modal-photo')
     this.eventListener()
   }
 
   eventListener() {
-    Fancybox.bind(this.itemClass, {
+
+    const gallaryName = this.$wrapper.data('gallery-name')
+
+    this.$item.attr('data-fancybox', gallaryName)
+
+    Fancybox.bind(this.$item, {
       groupAll: true,
       Image: {
         zoom: false
@@ -119,22 +125,12 @@ class ModalGallery {
   }
 }
 
-class ModalVideo {
-  constructor($wrapper) {
-    this.$wrapper = $wrapper
-  }
-}
-
 const initModals = () => {
   modal.init()
   modalPhoto.init()
 
-  $('.js-gallery-modal').each(function() {
-    new ModalGallery()
-  })
-
-  $('.js-modal-video').each(function() {
-    new ModalVideo($(this))
+  $('.js-gallery-modal').each(function () {
+    new ModalGallery($(this))
   })
 }
 

@@ -21,7 +21,7 @@ const webpack = require('webpack')
 const changed = require('gulp-changed')
 const newer = require('gulp-newer')
 const del = require('del')
-const diffableHtml = require('gulp-diffable-html')
+const watch = require('node-watch')
 
 let isDev = true
 
@@ -34,37 +34,37 @@ const path = {
     src: srcPath + 'pug/pages/*.pug',
     app: appPath,
     build: buildPath,
-    watch: srcPath + 'pug/**/*.pug'
+    watch: srcPath + 'pug/'
   },
   css: {
     src: srcPath + 'sass/*.{sass,scss}',
     app: appPath + 'css/',
     build: buildPath + 'css/',
-    watch: srcPath + 'sass/**/*.{sass,scss}'
+    watch: srcPath + 'sass/'
   },
   js: {
     src: srcPath + 'js/app.js',
     app: appPath + 'js/',
     build: buildPath + 'js/',
-    watch: srcPath + 'js/**/*.js'
+    watch: srcPath + 'js/'
   },
   img: {
     src: srcPath + 'img/**/*.*',
     app: appPath + 'img/',
     build: buildPath + 'img/',
-    watch: srcPath + 'img/**/*.*'
+    watch: srcPath + 'img/'
   },
   icons: {
     src: srcPath + 'img/icons/*.svg',
     app: appPath + 'img/icons/',
     build: buildPath + 'img/icons/',
-    watch: srcPath + 'img/icons/*.svg'
+    watch: srcPath + 'img/icons/'
   },
   fonts: {
     src: srcPath + 'fonts/**/*.{eot,woff,woff2,ttf,svg}',
     app: appPath + 'fonts/',
     build: buildPath + 'fonts/',
-    watch: srcPath + 'fonts/**/*.{eot,woff,woff2,ttf,svg}'
+    watch: srcPath + 'fonts/'
   },
   clean: {
     app: './' + appPath,
@@ -167,7 +167,7 @@ const js = cb => {
         ]
       },
       mode: isDev ? 'development' : 'production',
-      devtool: isDev ? 'eval-source-map' : 'hidden-source-map',
+      devtool: isDev ? 'eval-source-map' : 'hidden-source-map'
     }))
     .pipe(sourcemaps.write())
     .pipe(rename({
@@ -182,7 +182,6 @@ const js = cb => {
 const img = cb => {
   return src(path.img.src, { base: srcPath + 'img/' })
     .pipe(dest(path.img.app))
-    .pipe(browserSync.reload({ stream: true }))
 
   cb()
 }
@@ -269,7 +268,6 @@ const buildApp = gulp.series(cleanApp, devMode, html, css, js, img, fonts, icons
 const buildHtml = cb => {
   gulp.series(html)
   return src([path.html.app + '*.html'])
-    .pipe(diffableHtml())
     .pipe(dest(path.html.build))
 
   cb()
@@ -312,16 +310,16 @@ const buildJs = cb => {
         minimize: false
       }
     }))
-    .pipe(rename({
-      basename: 'app',
-      extname: '.js'
-    }))
-    .pipe(dest(path.js.build))
+    // .pipe(rename({
+    //   basename: 'app',
+    //   extname: '.js'
+    // }))
+    // .pipe(dest(path.js.build))
     .pipe(uglify())
-    .pipe(rename({
-      suffix: '.min',
-      extname: '.js'
-    }))
+    // .pipe(rename({
+    //   suffix: '.min',
+    //   extname: '.js'
+    // }))
     .pipe(dest(path.js.build))
 
   cb()
@@ -357,17 +355,17 @@ exports.buildFonts = gulp.series(fonts, buildFonts)
 // ------------------------------ WATCHING
 
 const watchFiles = () => {
-  gulp.watch(path.html.watch).on('change', gulp.series(html, browserSync.reload))
-  gulp.watch(path.css.watch).on('change', gulp.series(css, browserSync.reload))
-  gulp.watch(path.js.watch).on('change', gulp.series(js, browserSync.reload))
-  gulp.watch(path.img.watch).on('change', gulp.series(img, browserSync.reload))
-  gulp.watch(path.icons.watch).on('change', gulp.series(icons, browserSync.reload))
-  gulp.watch(path.fonts.watch).on('change', gulp.series(fonts, browserSync.reload))
+  watch(path.html.watch, { recursive: true }, gulp.series(html, browserSync.reload))
+  watch(path.css.watch, { recursive: true }, gulp.series(css, browserSync.reload))
+  watch(path.js.watch, { recursive: true }, gulp.series(js, browserSync.reload))
+  watch(path.img.watch, { recursive: true }, gulp.series(img, browserSync.reload))
+  watch(path.icons.watch, { recursive: true }, gulp.series(icons, browserSync.reload))
+  watch(path.fonts.watch, { recursive: true }, gulp.series(fonts, browserSync.reload))
 }
 
-const watch = gulp.series(buildApp, server, watchFiles)
+const watchDev = gulp.series(buildApp, server, watchFiles)
 const watchBuild = gulp.series(build, server)
 
-exports.watch = watch
+exports.watch = watchDev
 exports.watchBuild = watchBuild
-exports.default = watch
+exports.default = watchDev

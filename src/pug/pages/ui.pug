@@ -41,14 +41,14 @@ block content
 			.ui
 				.ui-header Gallery
 				.ui-section
-					.gallery.js-gallery-modals
-						a.gallery__item.js-gallery-modals-photo(data-fancybox="gallery" href='https://lipsum.app/id/60/1600x1200')
+					.gallery.js-gallery-modal(data-gallery-name='test')
+						a.gallery__item.js-gallery-modal-photo(href='https://lipsum.app/id/60/1600x1200')
 							img.gallery__image(src='https://lipsum.app/id/60/1600x1200' alt='')
-						a.gallery__item.js-gallery-modals-photo(data-fancybox="gallery" href='https://lipsum.app/id/61/1600x1200')
+						a.gallery__item.js-gallery-modal-photo(href='https://lipsum.app/id/61/1600x1200')
 							img.gallery__image(src='https://lipsum.app/id/61/1600x1200' alt='')
-						a.gallery__item.js-gallery-modals-photo(data-fancybox="gallery" href='https://lipsum.app/id/62/1600x1200')
+						a.gallery__item.js-gallery-modal-photo(href='https://lipsum.app/id/62/1600x1200')
 							img.gallery__image(src='https://lipsum.app/id/62/1600x1200' alt='')
-						a.gallery__item.js-gallery-modals-photo(data-fancybox="gallery" href='https://lipsum.app/id/63/1600x1200')
+						a.gallery__item.js-gallery-modal-photo(href='https://lipsum.app/id/63/1600x1200')
 							img.gallery__image(src='https://lipsum.app/id/63/1600x1200' alt='')
 
 				.ui-header Gallery Single
@@ -57,6 +57,25 @@ block content
 						img.modal-photo__image(src='https://lipsum.app/id/63/1600x1200' alt='')
 					a.modal-photo.js-modal-photo(href='https://lipsum.app/id/61/1600x1200')
 						img.modal-photo__image(src='https://lipsum.app/id/61/1600x1200' alt='')
+
+			.ui
+				.ui-header Slider + Gallery
+				.ui-section
+
+					.swiper.js-slider.gallery.js-gallery-modal(data-gallery-name='slider')
+						.swiper-wrapper
+							.swiper-slide
+								a.gallery__item.js-gallery-modal-photo(href='https://lipsum.app/id/60/1600x1200')
+									img.gallery__image(src='https://lipsum.app/id/60/1600x1200' alt='')
+							.swiper-slide
+								a.gallery__item.js-gallery-modal-photo(href='https://lipsum.app/id/61/1600x1200')
+									img.gallery__image(src='https://lipsum.app/id/61/1600x1200' alt='')
+							.swiper-slide
+								a.gallery__item.js-gallery-modal-photo(href='https://lipsum.app/id/62/1600x1200')
+									img.gallery__image(src='https://lipsum.app/id/62/1600x1200' alt='')
+							.swiper-slide
+								a.gallery__item.js-gallery-modal-photo(href='https://lipsum.app/id/63/1600x1200')
+									img.gallery__image(src='https://lipsum.app/id/63/1600x1200' alt='')
 
 			.ui
 				.ui-header Forms
@@ -89,7 +108,7 @@ block content
 								button.custom-select__header.js-custom-select-toggle
 									span.custom-select__selected.js-custom-select-render Тип инвестиции
 									span.custom-select__arrow
-										+icon('down', 'custom-select__arrow-icon')
+										+icon('angle-down', 'custom-select__arrow-icon')
 								.custom-select__body.js-custom-select-list
 									label.custom-select__option
 										input(name='test' type="checkbox" value="1")
@@ -117,7 +136,7 @@ block content
 								button.custom-select__header.js-custom-select-toggle
 									span.custom-select__selected.js-custom-select-render Multiple Select
 									span.custom-select__arrow
-										+icon('down', 'custom-select__arrow-icon')
+										+icon('angle-down', 'custom-select__arrow-icon')
 								.custom-select__body.js-custom-select-list
 									label.custom-select__option
 										input(name='category' type="checkbox" value="1")
@@ -196,16 +215,15 @@ block content
 			.ui
 				.ui-header Navigation
 				.ui-section
+
 					.bread-crumbs
-						a(href="/" title="Главная").bread-crumb
-							span Главная
-						a(href="/" title="Корневой каталог").bread-crumb
-							span Корневой каталог
-						.bread-crumb Прессы чеканочные кривошипно-коленные
+						a.bread-crumbs__link(href='/' title='Главная') Главная
+						a.bread-crumbs__link(href='/' title='Каталог') Каталог
+						a.bread-crumbs__link(href='/' title='Карточка товара') Карточка товара
 
 					.pagination
 						a(href="#").pagination__control
-							+icon('arrow-left')
+							+icon('angle-left')
 						.pagination__list
 							a(href="#").pagination__link 1
 							a(href="#").pagination__link 2
@@ -214,13 +232,9 @@ block content
 							a(href="#").pagination__link 10
 							a(href="#").pagination__link 11
 						a(href="#").pagination__control
-							+icon('arrow-right')
+							+icon('angle-right')
 
 					button.btn(onclick="(function() { window.launchWindowPreloader(); setTimeout(function(){stopWindowPreloader()}, 2500) })()") Launch Window Preloader
-
-			.ui
-				.ui-header Typography
-				.ui-section
 
 			.ui
 				.ui-header Modals
