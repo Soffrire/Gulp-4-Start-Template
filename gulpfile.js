@@ -1,5 +1,5 @@
 /* eslint-disable no-unreachable */
-const { src, dest } = require('gulp')
+const { src, dest, series, parallel } = require('gulp')
 
 const gulp = require('gulp')
 const pug = require('gulp-pug')
@@ -21,7 +21,6 @@ const webpack = require('webpack')
 const changed = require('gulp-changed')
 const newer = require('gulp-newer')
 const del = require('del')
-const watch = require('node-watch')
 
 let isDev = true
 
@@ -355,12 +354,12 @@ exports.buildFonts = gulp.series(fonts, buildFonts)
 // ------------------------------ WATCHING
 
 const watchFiles = () => {
-  watch(path.html.watch, { recursive: true }, gulp.series(html, browserSync.reload))
-  watch(path.css.watch, { recursive: true }, gulp.series(css, browserSync.reload))
-  watch(path.js.watch, { recursive: true }, gulp.series(js, browserSync.reload))
-  watch(path.img.watch, { recursive: true }, gulp.series(img, browserSync.reload))
-  watch(path.icons.watch, { recursive: true }, gulp.series(icons, browserSync.reload))
-  watch(path.fonts.watch, { recursive: true }, gulp.series(fonts, browserSync.reload))
+  gulp.watch(path.html.watch).on('change', gulp.series(html, browserSync.reload))
+  gulp.watch(path.css.watch).on('change', gulp.series(css, browserSync.reload))
+  gulp.watch(path.js.watch).on('change', gulp.series(js, browserSync.reload))
+  gulp.watch(path.img.watch).on('change', gulp.series(img, browserSync.reload))
+  gulp.watch(path.icons.watch).on('change', gulp.series(icons, browserSync.reload))
+  gulp.watch(path.fonts.watch).on('change', gulp.series(fonts, browserSync.reload))
 }
 
 const watchDev = gulp.series(buildApp, server, watchFiles)
