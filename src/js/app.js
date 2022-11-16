@@ -1,11 +1,9 @@
-import initApp from './initApp'
-import initBackendScripts from './backend/initBackendScripts'
+import initApp from './init'
 
-import './global/vendor'
-import './global/helpers'
-import './global/widget'
+require('./vendor')
+require('./helpers')
 
-document.addEventListener('DOMContentLoaded', () => {
-	initApp()
-	initBackendScripts()
-})
+// todo: Удалить перед сборкой (build) проекта.
+require('./widget')
+
+initApp()

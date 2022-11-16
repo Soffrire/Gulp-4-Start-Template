@@ -1,0 +1,8 @@
+#error-modal.modal.modal--error.modal--animate
+	.modal__inner
+		button.modal__button-close.js-close-modal(type='button')
+			+icon('close', 'modal__button-close-icon')
+		.modal__header
+			.modal__title.js-error-modal-title Ошибка при обработке запроса!
+		.modal__body
+			.modal__description.js-error-modal-description Повторите попытку или попробуйте позже.

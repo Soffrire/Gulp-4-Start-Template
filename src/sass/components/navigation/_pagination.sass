@@ -1,0 +1,50 @@
+.pagination
+	display: flex
+	align-items: stretch
+	justify-content: center
+	min-width: 24px
+
+	&__control
+		display: flex
+		align-items: center
+		justify-content: center
+		color: #000
+		transition: background ease .3s
+		margin: 0 4px
+		width: 27px
+		height: 27px
+		background: #EDF0F7
+		border-radius: 50%
+
+		.icon
+			font-size: 12px
+
+		&:hover
+			background: #D3D9EA
+
+	&__list
+		margin: 0 10px
+		display: flex
+		align-items: center
+
+	&__link
+		margin: 0 4px
+		width: 27px
+		height: 27px
+		display: flex
+		align-items: center
+		justify-content: center
+		background: transparent
+		color: #000
+		text-decoration: none
+		font-family: $ff
+		font-size: 15px
+		transition: background ease .3s
+		border-radius: 50%
+
+		&:hover:not(.pagination__link--not-hover)
+			background: #D3D9EA
+
+		&--current
+			background: $c-secondary
+			color: #fff

@@ -1,0 +1,37 @@
+@use 'sass:math';
+
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+}
+
+#SVG_container {
+  position: absolute;
+  height: 0;
+  width: 0;
+}
+
+#SVG_container svg {
+  position: absolute;
+  height: 0;
+  width: 0;
+}
+
+.icon-arrow-left {
+  font-size: math.div(17, 10)*1rem;
+  width: math.div(26, 17)*1em;
+}
+.icon-arrow-right {
+  font-size: math.div(17, 10)*1rem;
+  width: math.div(26, 17)*1em;
+}
+.icon-check {
+  font-size: math.div(9, 10)*1rem;
+  width: math.div(12, 9)*1em;
+}
+.icon-close {
+  font-size: math.div(16, 10)*1rem;
+  width: math.div(16, 16)*1em;
+}

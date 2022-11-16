@@ -1,0 +1,91 @@
+// Override Magnific Popup Styles
+.mfp-close
+	display: none !important
+
+.mfp-bg
+	background: rgba(0, 0, 0, 0.5)
+
+// Layout modals style
+.modals
+	display: none
+
+.modal
+	$modal: &
+
+	padding: 30px
+	background-color: #fff
+	max-width: 500px
+	margin-left: auto
+	margin-right: auto
+	width: 100%
+	position: relative
+	color: #000
+	box-shadow: 0 5px 15px -10px rgba(0, 0, 0, 0.7)
+
+	&--animate
+		animation-duration: .3s
+		animation-fill-mode: both
+
+	&__inner
+		position: relative
+
+	&__button-close
+		+reset-btn
+		position: absolute
+		right: -20px
+		top: -20px
+		padding: 0
+		width: 20px
+		height: 20px
+
+		&-icon
+			font-size: 14px
+			color: #000
+
+	&__title
+		text-align: center
+
+	&__body
+		margin-top: 20px
+
+	&__description
+		text-align: center
+
+	&--error
+
+		#{$modal}
+
+			&__title
+				color: red
+
+			&__description
+				color: red
+
+			&__button-close-icon
+				color: red
+
+	&--success
+
+		#{$modal}
+
+			&__title
+				color: green
+
+			&__description
+				color: green
+
+			&__button-close-icon
+				color: green
+
+	&--message
+
+		#{$modal}
+
+			&__title
+				color: lightblue
+
+			&__description
+				color: lightblue
+
+			&__button-close-icon
+				color: lightblue

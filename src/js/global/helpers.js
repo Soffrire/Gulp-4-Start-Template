@@ -1,7 +1,0 @@
-window.launchWindowPreloader = () => {
-
-}
-
-window.stopWindowPreloader = () => {
-
-}

@@ -1,11 +1,12 @@
+/* eslint-disable no-unreachable */
+const { src, dest } = require('gulp')
+
 const gulp = require('gulp')
-const pump = require('pump')
-const del = require('del')
-const gulpPug = require('gulp-pug')
-const gulpSass = require('gulp-sass')(require('sass'))
-const browserSync = require('browser-sync').create()
+const pug = require('gulp-pug')
 const sourcemaps = require('gulp-sourcemaps')
 const notify = require('gulp-notify')
+const browserSync = require('browser-sync').create()
+const sass = require('gulp-sass')(require('sass'))
 const cssnano = require('gulp-cssnano')
 const autoprefixer = require('gulp-autoprefixer')
 const rename = require('gulp-rename')
@@ -17,287 +18,341 @@ const svgo = require('gulp-svgo')
 const cheerio = require('gulp-cheerio')
 const replace = require('gulp-replace')
 const webpack = require('webpack')
-const vinylNamed = require('vinyl-named')
-const through2 = require('through2')
-const gulpBabel = require('gulp-babel')
+const changed = require('gulp-changed')
+const newer = require('gulp-newer')
+const del = require('del')
 
-const srcPath = './src/'
-const buildPath = './build/'
+let isDev = true
 
-const paths = {
+const srcPath = 'src/'
+const appPath = 'app/'
+const buildPath = 'build/'
+
+const path = {
   html: {
-    src: `${srcPath}pug/pages/**/*.pug`,
-    output: `${buildPath}`,
-    watch: `${srcPath}pug/**/*.pug`
+    src: srcPath + 'pug/pages/*.pug',
+    app: appPath,
+    build: buildPath,
+    watch: srcPath + 'pug/**/*.pug'
   },
   css: {
-    src: `${srcPath}scss/*.scss`,
-    output: `${buildPath}css/`,
-    watch: `${srcPath}scss/**/*.{scss,sass}`
+    src: srcPath + 'sass/*.sass',
+    app: appPath + 'css/',
+    build: buildPath + 'css/',
+    watch: srcPath + 'sass/**/*.{sass,scss}'
   },
   js: {
-    src: `${srcPath}js/app.js`,
-    output: `${buildPath}js/`,
-    watch: `${srcPath}/js/**`
+    src: srcPath + 'js/app.js',
+    app: appPath + 'js/',
+    build: buildPath + 'js/',
+    watch: srcPath + 'js/**/*.js'
   },
-  fonts: {
-    src: `${srcPath}fonts/**/*.*`,
-    output: `${buildPath}fonts/`,
-    watch: `${srcPath}fonts/**/*.*`
-  },
-  media: {
-    src: `${srcPath}media/**`,
-    output: `${buildPath}/media/`,
-    watch: `${srcPath}media/**/*.*`
+  img: {
+    src: srcPath + 'img/**/*.*',
+    app: appPath + 'img/',
+    build: buildPath + 'img/',
+    watch: srcPath + 'img/**/*.*'
   },
   icons: {
-    src: `${srcPath}media/icons/*.svg`,
-    output: `${srcPath}media/icons/`,
-    watch: `${srcPath}media/icons/*.svg`
+    src: srcPath + 'img/icons/*.svg',
+    app: appPath + 'img/icons/',
+    build: buildPath + 'img/icons/',
+    watch: srcPath + 'img/icons/*.svg'
+  },
+  fonts: {
+    src: srcPath + 'fonts/**/*.{eot,woff,woff2,ttf,svg}',
+    app: appPath + 'fonts/',
+    build: buildPath + 'fonts/',
+    watch: srcPath + 'fonts/**/*.{eot,woff,woff2,ttf,svg}'
+  },
+  clean: {
+    app: './' + appPath,
+    build: './' + buildPath
   }
 }
 
-// Supported Browsers
-const supportedBrowsers = [
-  'last 3 versions', // http://browserl.ist/?q=last+3+versions
-  'ie >= 10', // http://browserl.ist/?q=ie+%3E%3D+10
-  'edge >= 12', // http://browserl.ist/?q=edge+%3E%3D+12
-  'firefox >= 28', // http://browserl.ist/?q=firefox+%3E%3D+28
-  'chrome >= 21', // http://browserl.ist/?q=chrome+%3E%3D+21
-  'safari >= 6.1', // http://browserl.ist/?q=safari+%3E%3D+6.1
-  'opera >= 12.1', // http://browserl.ist/?q=opera+%3E%3D+12.1
-  'ios >= 7', // http://browserl.ist/?q=ios+%3E%3D+7
-  'android >= 4.4', // http://browserl.ist/?q=android+%3E%3D+4.4
-  'blackberry >= 10', // http://browserl.ist/?q=blackberry+%3E%3D+10
-  'operamobile >= 12.1', // http://browserl.ist/?q=operamobile+%3E%3D+12.1
-  'samsung >= 4' // http://browserl.ist/?q=samsung+%3E%3D+4
-]
+const server = cb => {
+  browserSync.init({
+    port: 3000,
+    server: {
+      baseDir: appPath
+    },
+    notify: false
+  })
 
-// Config
-const autoprefixConfig = { browsers: supportedBrowsers, cascade: false }
-const babelConfig = { targets: { browsers: supportedBrowsers } }
+  cb()
+}
 
-const buildMarkup = (mode) => (done) => {
-  return ['development', 'production'].includes(mode)
-    ? pump([
-      gulp.src(paths.html.src),
-      gulpPug({
+const html = cb => {
+  return src(path.html.src)
+    .pipe(newer(path.html.app + '*.html'))
+    .pipe(pug({
+      pretty: true
+    }))
+    .pipe(dest(path.html.app))
+
+  cb()
+}
+
+const css = cb => {
+  return src(path.css.src, { base: srcPath + 'sass/' })
+    .pipe(newer(path.css.app + '*.css'))
+    .pipe(sourcemaps.init())
+    .pipe(plumber({
+      errorHandler: function (err) {
+        notify.onError({
+          title: 'SASS Error',
+          message: 'Error <%= error.message %>'
+        })(err)
+        this.emit('end')
+      }
+    }))
+    .pipe(sass({
+      includePaths: './node_modules/'
+    }))
+    .pipe(autoprefixer({
+      cascade: true,
+      remove: false
+    }))
+    .pipe(sourcemaps.write())
+    .pipe(rename({
+      suffix: '.min',
+      extname: '.css'
+    }))
+    .pipe(dest(path.css.app))
+
+  cb()
+}
+
+const js = cb => {
+  return src(path.js.src, { base: srcPath + 'js/' })
+    .pipe(newer(path.js.app + '*.js'))
+    .pipe(sourcemaps.init())
+    .pipe(plumber({
+      errorHandler: function (err) {
+        notify.onError({
+          title: 'JS Error',
+          message: 'Error: <%= error.message %>'
+        })(err)
+        this.emit('end')
+      }
+    }))
+    .pipe(webpackStream({
+      output: {
+        filename: 'app.js'
+      },
+      module: {
+        rules: [
+          {
+            test: /\.(js)$/,
+            exclude: /(node_modules)/,
+            loader: 'babel-loader',
+            query: {
+              presets: ['@babel/preset-env']
+            }
+          }
+        ]
+      },
+      mode: isDev ? 'development' : 'production',
+      devtool: isDev ? 'eval-source-map' : 'hidden-source-map',
+    }))
+    .pipe(sourcemaps.write())
+    .pipe(rename({
+      suffix: '.min',
+      extname: '.js'
+    }))
+    .pipe(dest(path.js.app))
+
+  cb()
+}
+
+const img = cb => {
+  return src(path.img.src, { base: srcPath + 'img/' })
+    .pipe(dest(path.img.app))
+    .pipe(browserSync.reload({ stream: true }))
+
+  cb()
+}
+
+const fonts = cb => {
+  return src(path.fonts.src, { base: srcPath + 'fonts/' })
+    .pipe(dest(path.fonts.app))
+
+  cb()
+}
+
+const icons = cb => {
+  return src(path.icons.src, { base: srcPath + 'img/icons/' })
+    .pipe(svgo({
+      js2svg: {
         pretty: true
-      }),
-      // ...((mode === 'production')
-      // 	? pump([])
-      // 	: []),
-      gulp.dest(paths.html.output)
-      // ...((mode === 'development') ? [
-      //   browserSync.reload({
-      //     stream: true
-      //   })
-      // ] : [])
-    ], done)
-    : undefined
-}
-
-const buildStyles = (mode) => (done) => {
-  return ['development', 'production'].includes(mode)
-    ? pump([
-      gulp.src(paths.css.src),
-      gulpSass(),
-      sourcemaps.init(),
-      plumber({
-        errorHandler: function(err) {
-          notify.onError({
-            title: 'SASS Error',
-            message: 'Error <%= error.message %>'
-          })(err)
-          this.emit('end')
+      },
+      removeTitle: true,
+      removeEmptyAttrs: true
+    }))
+    .pipe(cheerio({
+      run: $ => {
+        $('[fill]').removeAttr('fill')
+        $('[stroke]').removeAttr('stroke')
+        $('[style]').removeAttr('style')
+      },
+      parserOptions: { xmlMode: true }
+    }))
+    .pipe(replace('&gt;', '>'))
+    .pipe(svgSprite({
+      mode: {
+        symbol: {
+          sprite: '../sprite.svg',
+          render: {
+            scss: {
+              dest: '../../../sass/base/_sprite.scss',
+              template: srcPath + 'sass/helpers/_sprite_template.scss'
+            }
+          },
+          example: true
         }
-      }),
-      autoprefixer({
-        cascade: true,
-        remove: false
-      }),
-      sourcemaps.write(),
-      rename({
-        suffix: '.min',
-        extname: '.css'
-      }),
-      gulp.dest(paths.css.output)
-      // ...((mode === 'development') ? [
-      //   browserSync.reload({
-      //     stream: true
-      //   })
-      // ] : [])
-      // ...((mode === 'production')
-      // 	? pump([])
-      // 	: []),
-      // ...((mode === 'development')
-      // 	? pump([])
-      // 	: [])
-    ], done)
-    : undefined
+      }
+    }))
+    .pipe(dest(srcPath + 'img/sprite/'))
+
+  cb()
 }
 
-const buildScripts = (mode) => (done) => {
-  let streamMode
+const cleanApp = cb => {
+  return del(path.clean.app)
 
-  if (mode === 'development')
-    streamMode = require('./webpack/config.development.js')
-  else if (mode === 'production')
-    streamMode = require('./webpack/config.production.js')
-  else
-    streamMode = undefined
-
-  return ['development', 'production'].includes(mode)
-    ? pump([
-      gulp.src(paths.js.src),
-      vinylNamed(),
-      webpackStream(streamMode, webpack),
-      sourcemaps.init({ loadMaps: true }),
-      through2.obj(function(file, enc, cb) {
-        const isSourceMap = /\.map$/.test(file.path)
-        if (!isSourceMap) this.push(file)
-        cb()
-      }),
-      gulpBabel({ presets: [['env', babelConfig]] }),
-      ...((mode === 'production') ? [uglify()] : []),
-      sourcemaps.write('./'),
-      gulp.dest(paths.js.output)
-    ], done)
-    : undefined
+  cb()
 }
 
-const buildFonts = (mode) => (done) => {
-  return ['development', 'production'].includes(mode)
-    ? pump([
-      gulp.src(paths.fonts.src),
-      gulp.dest(paths.fonts.output)
-      // ...((mode === 'production')
-      // 	? pump([])
-      // 	: []),
-      // ...((mode === 'development')
-      // 	? pump([])
-      // 	: [])
-    ], done)
-    : undefined
+const cleanBuild = cb => {
+  return del(path.clean.build)
+
+  cb()
 }
 
-const buildMedia = (mode) => (done) => {
-  return ['development', 'production'].includes(mode)
-    ? pump([
-      gulp.src(paths.media.src),
-      gulp.dest(paths.media.output)
-      // ...((mode === 'production')
-      // 	? pump([])
-      // 	: []),
-      // ...((mode === 'development')
-      // 	? pump([])
-      // 	: [])
-    ], done)
-    : undefined
+exports.html = html
+exports.css = css
+exports.js = js
+exports.img = img
+exports.fonts = fonts
+exports.icons = icons
+exports.server = server
+exports.cleanApp = cleanApp
+exports.cleanBuild = cleanBuild
+
+const buildApp = cb => {
+  isDev = true
+
+  gulp.series(cleanApp, html, css, js, img, fonts, icons)
+
+  cb()
 }
 
-const buildIcons = (mode) => (done) => {
-  return ['development', 'production'].includes(mode)
-    ? pump([
-      gulp.src(paths.icons.src),
-      gulp.dest(paths.icons.output)
-      // ...((mode === 'production')
-      // 	? pump([])
-      // 	: []),
-      // ...((mode === 'development')
-      // 	? pump([])
-      // 	: [])
-    ], done)
-    : undefined
+// ------------------------------ BUILDING
+
+const buildHtml = cb => {
+  gulp.series(html)
+  return src([path.html.app + '*.html'])
+    .pipe(dest(path.html.build))
+
+  cb()
 }
 
-const genericTask = (mode, context = 'building') => {
-  let port
-  let modeName
+const buildCss = cb => {
+  return src(path.css.app + 'app.min.css')
+    .pipe(cssnano({
+      zindex: false,
+      discardComments: {
+        removeAll: true
+      }
+    }))
+    .pipe(dest(path.css.build))
 
-  switch (mode) {
-    case 'development': {
-      port = '3000'
-      modeName = 'Development Mode'
-    }
-      break
-    case 'production': {
-      port = '8000'
-      modeName = 'Production Mode'
-    }
-      break
-    default: {
-      port = undefined
-      modeName = undefined
-    }
-  }
-
-  const allBootingTasks = [
-    Object.assign(buildMarkup(mode), { displayName: `HTML: build - ${mode}` }),
-    Object.assign(buildStyles(mode), { displayName: `CSS: build - ${mode}` }),
-    Object.assign(buildScripts(mode), { displayName: `JS: build - ${mode}` }),
-    Object.assign(buildFonts(mode), { displayName: `FONTS: build - ${mode}` }),
-    Object.assign(buildIcons(mode), { displayName: `ICONS: build - ${mode}` }),
-    Object.assign(buildMedia(mode), { displayName: `MEDIA: build - ${mode}` })
-  ]
-
-  const browserLoadingWatching = (done) => {
-    browserSync.init({
-      port,
-      server: buildPath
-    })
-
-    gulp.watch(paths.html.watch).on('all', gulp.series(
-      Object.assign(
-        buildMarkup(mode),
-        {
-          displayName: `Watch HTML: Build - ${modeName}`
-        }),
-      browserSync.reload
-    ))
-
-    done()
-
-    gulp.watch(paths.css.watch).on('all', gulp.series(
-      Object.assign(
-        buildStyles(mode),
-        {
-          displayName: `Watch CSS: Build - ${modeName}`
-        }),
-      browserSync.reload
-    ))
-
-    gulp.watch(paths.js.watch).on('all', gulp.series(
-      Object.assign(
-        buildScripts(mode),
-        {
-          displayName: `Watch JS: Build - ${modeName}`
-        }),
-      browserSync.reload
-    ))
-
-    gulp.watch(paths.media.watch).on('all', gulp.series(
-      Object.assign(
-        buildMedia(mode),
-        {
-          displayName: `Watch MEDIA: Build - ${modeName}`
-        }),
-      browserSync.reload
-    ))
-  }
-
-  return [
-    ...allBootingTasks,
-    Object.assign(browserLoadingWatching, { displayName: `Watching files - ${mode}` })
-  ]
+  cb()
 }
 
-exports.default = gulp.series(...genericTask('development', 'building'))
-exports.build = gulp.series(...genericTask('production', 'building'))
+const buildJs = cb => {
+  gulp.series(js)
 
-// For assets on backend
-exports.buildCss = gulp.series(buildStyles('production'))
-exports.buildJs = gulp.series(buildScripts('production'))
+  return src(path.js.app + 'app.min.js')
+    .pipe(webpackStream({
+      output: {
+        filename: 'app.min.js'
+      },
+      module: {
+        rules: [
+          {
+            test: /\.(js)$/,
+            exclude: /(node_modules)/,
+            loader: 'babel-loader',
+            query: {
+              presets: ['@babel/preset-env']
+            }
+          }
+        ]
+      },
+      optimization: {
+        minimize: false
+      }
+    }))
+    .pipe(rename({
+      basename: 'app',
+      extname: '.js'
+    }))
+    .pipe(dest(path.js.build))
+    .pipe(uglify())
+    .pipe(rename({
+      suffix: '.min',
+      extname: '.js'
+    }))
+    .pipe(dest(path.js.build))
 
-// Build icons & svg-sprite
-exports.buildIcons = gulp.series(buildIcons('production'))
+  cb()
+}
+
+const buildImg = cb => {
+  gulp.series(img)
+
+  return src(path.img.app + '**/*.*')
+    .pipe(dest(path.img.build))
+
+  cb()
+}
+
+const buildFonts = cb => {
+  gulp.series(fonts)
+
+  return src(path.fonts.app + '**/*.*')
+    .pipe(dest(path.fonts.build))
+
+  cb()
+}
+
+const build = () => {
+  isDev = false
+
+  gulp.series(cleanBuild, buildApp, buildHtml, buildCss, buildJs, buildImg, buildFonts)
+}
+
+exports.build = build
+exports.buildHtml = gulp.series(html, buildHtml)
+exports.buildCss = gulp.series(css, buildCss)
+exports.buildJs = gulp.series(js, buildJs)
+exports.buildImg = gulp.series(img, buildImg)
+exports.buildFonts = gulp.series(fonts, buildFonts)
+
+// ------------------------------ WATCHING
+
+const watchFiles = () => {
+  gulp.watch(path.html.watch).on('change', gulp.series(html, browserSync.reload))
+  gulp.watch(path.css.watch).on('change', gulp.series(css, browserSync.reload))
+  gulp.watch(path.js.watch).on('change', gulp.series(js, browserSync.reload))
+  gulp.watch(path.img.watch).on('change', gulp.series(img, browserSync.reload))
+  gulp.watch(path.icons.watch).on('change', gulp.series(icons, browserSync.reload))
+  gulp.watch(path.fonts.watch).on('change', gulp.series(fonts, browserSync.reload))
+}
+
+const watch = gulp.series(buildApp, server, watchFiles)
+
+exports.watch = watch
+exports.default = watch
