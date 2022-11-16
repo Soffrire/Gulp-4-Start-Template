@@ -1,0 +1,15 @@
+mixin head(array)
+	meta(charset='UTF-8')
+	title!= array.title
+	meta(name='viewport' content='width=device-width, user-scalable=no')
+	link(href='/css/app.min.css' rel='stylesheet' media='all')
+
+mixin scripts()
+	script(src='/js/app.js')
+
+mixin icon(name, mod)
+	- name = name || ''
+	- mod = mod || ''
+
+	svg(class=`icon icon-${name} mod`)
+		use(xlink:href=`#${name}`)

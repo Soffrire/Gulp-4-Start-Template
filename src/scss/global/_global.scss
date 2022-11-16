@@ -1,0 +1,27 @@
+* {
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+
+html {
+  font-size: 62.5%;
+}
+
+
+body {
+  margin: 0;
+}
+
+
+.body {
+  font-family: var(--ff);
+  color: var(--color-base);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+}

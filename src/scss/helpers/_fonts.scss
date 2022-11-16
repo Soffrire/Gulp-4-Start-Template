@@ -1,0 +1,16 @@
+@mixin fontFace($fontName) {
+  @font-face {
+    font-family: quote($fontName);
+    src:  url('../fonts/' + $fontName + '/' + $fontName + '.eot');
+    src:  url('../fonts/' + $fontName + '/' + $fontName + '.eot?#iefix') format('embedded-opentype'),
+          url('../fonts/' + $fontName + '/' + $fontName + '.woff') format('woff'),
+          url('../fonts/' + $fontName + '/' + $fontName + '.woff2') format('woff2'),
+          url('../fonts/' + $fontName + '/' + $fontName + '.ttf') format('truetype'),
+          url('../fonts/' + $fontName + '/' + $fontName + '.svg##{$fontName}') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+}
+
+@include fontFace('MontserratRegular');
