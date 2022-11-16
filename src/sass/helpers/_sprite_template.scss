@@ -21,7 +21,7 @@
 
 {{#shapes}}
 .icon-{{base}} {
-  font-size: math.div({{height.inner}}, 10)*1rem;
+  font-size: math.div({{height.inner}}, 300)*1rem;
   width: math.div({{width.inner}}, {{height.inner}})*1em;
 }
 {{/shapes}}

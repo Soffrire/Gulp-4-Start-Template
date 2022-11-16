@@ -1,5 +1,5 @@
 /* eslint-disable no-unreachable */
-const { src, dest } = require('gulp')
+const { src, dest, series, parallel } = require('gulp')
 
 const gulp = require('gulp')
 const pug = require('gulp-pug')
@@ -33,37 +33,37 @@ const path = {
     src: srcPath + 'pug/pages/*.pug',
     app: appPath,
     build: buildPath,
-    watch: srcPath + 'pug/**/*.pug'
+    watch: srcPath + 'pug/'
   },
   css: {
-    src: srcPath + 'sass/*.sass',
+    src: srcPath + 'sass/*.{sass,scss}',
     app: appPath + 'css/',
     build: buildPath + 'css/',
-    watch: srcPath + 'sass/**/*.{sass,scss}'
+    watch: srcPath + 'sass/'
   },
   js: {
     src: srcPath + 'js/app.js',
     app: appPath + 'js/',
     build: buildPath + 'js/',
-    watch: srcPath + 'js/**/*.js'
+    watch: srcPath + 'js/'
   },
   img: {
     src: srcPath + 'img/**/*.*',
     app: appPath + 'img/',
     build: buildPath + 'img/',
-    watch: srcPath + 'img/**/*.*'
+    watch: srcPath + 'img/'
   },
   icons: {
     src: srcPath + 'img/icons/*.svg',
     app: appPath + 'img/icons/',
     build: buildPath + 'img/icons/',
-    watch: srcPath + 'img/icons/*.svg'
+    watch: srcPath + 'img/icons/'
   },
   fonts: {
     src: srcPath + 'fonts/**/*.{eot,woff,woff2,ttf,svg}',
     app: appPath + 'fonts/',
     build: buildPath + 'fonts/',
-    watch: srcPath + 'fonts/**/*.{eot,woff,woff2,ttf,svg}'
+    watch: srcPath + 'fonts/'
   },
   clean: {
     app: './' + appPath,
@@ -71,11 +71,23 @@ const path = {
   }
 }
 
+const devMode = cb => {
+  isDev = true
+
+  cb()
+}
+
+const prodMode = cb => {
+  isDev = false
+
+  cb()
+}
+
 const server = cb => {
   browserSync.init({
     port: 3000,
     server: {
-      baseDir: appPath
+      baseDir: isDev ? appPath : buildPath
     },
     notify: false
   })
@@ -154,7 +166,7 @@ const js = cb => {
         ]
       },
       mode: isDev ? 'development' : 'production',
-      devtool: isDev ? 'eval-source-map' : 'hidden-source-map',
+      devtool: isDev ? 'eval-source-map' : 'hidden-source-map'
     }))
     .pipe(sourcemaps.write())
     .pipe(rename({
@@ -169,7 +181,6 @@ const js = cb => {
 const img = cb => {
   return src(path.img.src, { base: srcPath + 'img/' })
     .pipe(dest(path.img.app))
-    .pipe(browserSync.reload({ stream: true }))
 
   cb()
 }
@@ -179,6 +190,13 @@ const fonts = cb => {
     .pipe(dest(path.fonts.app))
 
   cb()
+}
+
+const spriteSettings = {
+  spritePath: '../sprite.svg',
+  styleSptitePath: '../../../sass/base/_sprite.scss',
+  templateForSprite: srcPath + 'sass/helpers/_sprite_template.scss',
+  destFilesPath: srcPath + 'img/sprite/'
 }
 
 const icons = cb => {
@@ -202,18 +220,18 @@ const icons = cb => {
     .pipe(svgSprite({
       mode: {
         symbol: {
-          sprite: '../sprite.svg',
+          sprite: spriteSettings.spritePath,
           render: {
             scss: {
-              dest: '../../../sass/base/_sprite.scss',
-              template: srcPath + 'sass/helpers/_sprite_template.scss'
+              dest: spriteSettings.styleSptitePath,
+              template: spriteSettings.templateForSprite
             }
           },
           example: true
         }
       }
     }))
-    .pipe(dest(srcPath + 'img/sprite/'))
+    .pipe(dest(spriteSettings.destFilesPath))
 
   cb()
 }
@@ -239,14 +257,10 @@ exports.icons = icons
 exports.server = server
 exports.cleanApp = cleanApp
 exports.cleanBuild = cleanBuild
+exports.devMode = devMode
+exports.prodMode = prodMode
 
-const buildApp = cb => {
-  isDev = true
-
-  gulp.series(cleanApp, html, css, js, img, fonts, icons)
-
-  cb()
-}
+const buildApp = gulp.series(cleanApp, devMode, html, css, js, img, fonts, icons)
 
 // ------------------------------ BUILDING
 
@@ -295,16 +309,16 @@ const buildJs = cb => {
         minimize: false
       }
     }))
-    .pipe(rename({
-      basename: 'app',
-      extname: '.js'
-    }))
-    .pipe(dest(path.js.build))
+    // .pipe(rename({
+    //   basename: 'app',
+    //   extname: '.js'
+    // }))
+    // .pipe(dest(path.js.build))
     .pipe(uglify())
-    .pipe(rename({
-      suffix: '.min',
-      extname: '.js'
-    }))
+    // .pipe(rename({
+    //   suffix: '.min',
+    //   extname: '.js'
+    // }))
     .pipe(dest(path.js.build))
 
   cb()
@@ -328,11 +342,7 @@ const buildFonts = cb => {
   cb()
 }
 
-const build = () => {
-  isDev = false
-
-  gulp.series(cleanBuild, buildApp, buildHtml, buildCss, buildJs, buildImg, buildFonts)
-}
+const build = gulp.series(cleanBuild, buildApp, prodMode, buildHtml, buildCss, buildJs, buildImg, buildFonts)
 
 exports.build = build
 exports.buildHtml = gulp.series(html, buildHtml)
@@ -352,7 +362,9 @@ const watchFiles = () => {
   gulp.watch(path.fonts.watch).on('change', gulp.series(fonts, browserSync.reload))
 }
 
-const watch = gulp.series(buildApp, server, watchFiles)
+const watchDev = gulp.series(buildApp, server, watchFiles)
+const watchBuild = gulp.series(build, server)
 
-exports.watch = watch
-exports.default = watch
+exports.watch = watchDev
+exports.watchBuild = watchBuild
+exports.default = watchDev

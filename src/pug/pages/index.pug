@@ -5,20 +5,4 @@ block vars
 
 block content
 	main.page
-		a(data-fancybox href='https://lipsum.app/id/60/1600x1200')
-			img(src='https://lipsum.app/id/60/200x150')
-
-		// Dialog Contents
-		#dialog-content(style='display:none;max-width:500px;')
-			h2 Hello, world!
-			p
-				input(type='text' value='')
-			p
-				| Try hitting the tab key and notice how the focus stays within the dialog itself.
-			p
-				| To close dialog hit the esc button, click on the overlay or just click the close button.
-			p(class='margin-bottom--none')
-				| Element used to launch the modal would receive focus back after closing.
-		// Dialog Trigger
-		button.js-modal-open(data-fancybox='dialog' data-src='#dialog-content') Launch Dialog
-
+		.container

@@ -1,0 +1,23 @@
+.input-group {
+  $group: &;
+
+  &__error {
+    color: #FC6464;
+    font-size: 12px;
+
+    &:empty {
+      display: none;
+    }
+
+  }
+
+  &--error {
+    #{$group} .input {
+      background: #FFE1E1;
+    }
+  }
+
+  #{$group}__error {
+    padding-top: 10px;
+  }
+}

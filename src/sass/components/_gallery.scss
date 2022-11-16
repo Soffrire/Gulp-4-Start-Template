@@ -1,0 +1,28 @@
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+
+  &__item {
+    width: 100%;
+    height: auto;
+  }
+
+  &__image {
+    width: 100%;
+    height: auto;
+  }
+}
+
+
+
+.modal-photo {
+  display: inline-flex;
+  width: 100px;
+  height: 100px;
+
+  &__image {
+    width: 100%;
+    height: auto;
+  }
+}

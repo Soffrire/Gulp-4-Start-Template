@@ -1,0 +1,26 @@
+mixin checkbox-input(name, text, isChecked, isDisabled)
+	- name = name || ''
+	- text = text || ''
+	- isChecked = isChecked || false
+	- isDisabled = isDisabled || false
+	- var attrs = isChecked || isDisabled
+
+	if isChecked && isDisabled
+		label.checkbox
+			input.checkbox__input(name=`${name}` type='checkbox' checked disabled)
+			span.checkbox__indicator
+				+icon('check', 'checkbox__indicator-icon')
+			span.checkbox__description= text
+
+	else
+		label.checkbox
+			case attrs
+				when isChecked
+					input.checkbox__input(name=`${name}` type='checkbox' checked)
+				when isDisabled
+					input.checkbox__input(name=`${name}` type='checkbox' disabled)
+				default
+					input.checkbox__input(name=`${name}` type='checkbox')
+			span.checkbox__indicator
+				+icon('check', 'checkbox__indicator-icon')
+			span.checkbox__description= text

@@ -7,9 +7,14 @@ const slider = {
     this.slider = '.js-slider'
     this.createSlider()
   },
+
   createSlider() {
     new Swiper(this.slider, {
-      slidersPerView: 2
+      slidesPerView: 3,
+      spaceBetween: 20,
+      autoplay: {
+        delay: 5000
+      }
     })
   }
 }

@@ -1,13 +1,15 @@
 **NodeJS version:** `14.17.3`
 
-### Автоматическое форматирование JS-кода при сохранении файла:
+### Запуск проекта: `gulp` или `gulp watch`
 
-#### В PHPStorm:
+### Генерация/обновление svg-спрйта: `gulp icons`
 
-**`Settings | Languages & Frameworks | JavaScript | Code Quality Tiils | ESLint`**
+### Сборка проекта: `gulp build`
 
-Выбрать: `Automatic ESLint configuration`
+### Запуск собранного проекта на локальном сервере для проверки: `gulp watchBuild`
 
-Форматы файлов для отслеживания: `{**/*,*}.{js,ts,jsx,tsx,vue}`
+### Для генерации Favicon использовать сервис: [https://www.favicon-generator.org/]()
 
-Запуск форматирования при сохранении файла: `Run eslint --fix on save`
+### Заменить все файлы по пути: `/img/favicon/`
+
+### Для генерации шрифтов всех форматов использовать сервис: [https://transfonter.org/](https://transfonter.org/)

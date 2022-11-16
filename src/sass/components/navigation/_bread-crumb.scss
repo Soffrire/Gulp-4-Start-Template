@@ -1,0 +1,30 @@
+.bread-crumbs {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+
+  &__link {
+
+    &:not(:last-child) {
+      color: #5A6872;
+      position: relative;
+
+      &:after {
+        content: '-';
+        position: absolute;
+        right: -10px;
+        top: 50%;
+        transform: translateY(-50%);
+        text-decoration: none;
+        pointer-events: none;
+        user-select: none;
+        cursor: default;
+      }
+    }
+
+    &:not(:first-child) {
+      margin-left: 5px;
+    }
+  }
+}

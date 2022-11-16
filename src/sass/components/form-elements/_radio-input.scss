@@ -1,0 +1,75 @@
+.radio {
+  $radio: &;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+
+  [type="radio"] {
+    display: none;
+
+    &:checked {
+
+      ~ #{$radio}__indicator:after {
+        top: 5px;
+        bottom: 5px;
+        left: 5px;
+        right: 5px;
+      }
+
+    }
+
+    &:disabled {
+
+      ~ #{$radio}__indicator {
+        cursor: not-allowed;
+        border: 1px solid rgba(0, 0, 0, 0.1) !important;
+        background: rgba(0, 0, 0, 0.1);
+
+        &:after {
+          background: #F6F7F9 !important;
+        }
+
+      }
+
+      ~ #{$radio}__description {
+        color: rgba(0, 0, 0, 0.6);
+        cursor: not-allowed;
+      }
+
+    }
+  }
+
+  &__indicator {
+    background: #000;
+    height: 19px;
+    width: 19px;
+    min-width: 19px;
+    border: 1px solid #000;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    display: block;
+
+    &:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: block;
+      border-radius: 50%;
+      background: #fff;
+      transition: top ease .1s, bottom ease .1s, left ease .1s, right ease .1s;
+    }
+
+  }
+
+  &__description {
+    font-size: 12px;
+    color: #000;
+    padding: 0 14px;
+    flex: 1;
+    user-select: none;
+  }
+}

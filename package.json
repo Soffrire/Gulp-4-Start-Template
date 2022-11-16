@@ -4,7 +4,9 @@
     "description": "",
     "main": "gulpfile.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "watch": "gulp watch",
+        "build": "gulp build",
+        "testBuild": "gulp watchBuild"
     },
     "author": "",
     "license": "ISC",
@@ -47,6 +49,7 @@
         "jquery": "^3.6.0",
         "lint-staged": "^10.0.7",
         "magnific-popup": "^1.1.0",
+        "node-watch": "^0.7.3",
         "prettier": "^2.4.1",
         "sass": "^1.42.1",
         "swiper": "^7.0.9",

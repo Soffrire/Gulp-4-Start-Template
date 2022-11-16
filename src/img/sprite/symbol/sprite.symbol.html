@@ -19,8 +19,12 @@ They might well be outsourced to an external stylesheet of course.
 -->
 
 <style type="text/css">
-	.svg-arrow-left-dims { width: 26px; height: 17px; }
-	.svg-arrow-right-dims { width: 26px; height: 17px; }
+	.svg-angle-down-dims { width: 256px; height: 512px; }
+	.svg-angle-left-dims { width: 192px; height: 512px; }
+	.svg-angle-right-dims { width: 192px; height: 512px; }
+	.svg-angle-up-dims { width: 256px; height: 512px; }
+	.svg-arrow-left-dims { width: 448px; height: 512px; }
+	.svg-arrow-right-dims { width: 448px; height: 512px; }
 	.svg-check-dims { width: 12px; height: 9px; }
 	.svg-close-dims { width: 16px; height: 16px; }
 </style>
@@ -45,8 +49,12 @@ for further details on how to create this embeddable sprite variant.
 -->
 
 <svg width="0" height="0" style="position:absolute">
-		<symbol viewBox="0 0 26 17" id="arrow-left" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M15 10c3.982 0 6.457-1.65 7.856-4.447.498-.997.821-2.075 1.001-3.155.063-.378.104-.728.126-1.04C23.996 1.178 24 1 24 1a1 1 0 011-1c.552 0 1 .393 1 1s-.043.965-.17 1.727c-.21 1.264-.59 2.53-1.186 3.72C22.918 9.9 19.768 12 15 12H3.414l3.293 3.293a1 1 0 11-1.414 1.414l-5-5a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L3.414 10H15z"/></symbol>
-		<symbol viewBox="0 0 26 17" id="arrow-right" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M11 10c-3.982 0-6.457-1.65-7.856-4.447a11.175 11.175 0 01-1.001-3.155 11.23 11.23 0 01-.126-1.04A8.5 8.5 0 012 1a1 1 0 00-1-1C.448 0 0 .393 0 1s.043.965.17 1.727c.21 1.264.59 2.53 1.186 3.72C3.082 9.9 6.232 12 11 12h11.586l-3.293 3.293a1 1 0 001.414 1.414l5-5a1 1 0 000-1.414l-5-5a1 1 0 10-1.414 1.414L22.586 10H11z"/></symbol>
+		<symbol viewBox="0 0 256 512" id="angle-down" xmlns="http://www.w3.org/2000/svg"><path d="M119.5 326.9L3.5 209.1c-4.7-4.7-4.7-12.3 0-17l7.1-7.1c4.7-4.7 12.3-4.7 17 0L128 287.3l100.4-102.2c4.7-4.7 12.3-4.7 17 0l7.1 7.1c4.7 4.7 4.7 12.3 0 17L136.5 327c-4.7 4.6-12.3 4.6-17-.1z"/></symbol>
+		<symbol viewBox="0 0 192 512" id="angle-left" xmlns="http://www.w3.org/2000/svg"><path d="M25.1 247.5l117.8-116c4.7-4.7 12.3-4.7 17 0l7.1 7.1c4.7 4.7 4.7 12.3 0 17L64.7 256l102.2 100.4c4.7 4.7 4.7 12.3 0 17l-7.1 7.1c-4.7 4.7-12.3 4.7-17 0L25 264.5c-4.6-4.7-4.6-12.3.1-17z"/></symbol>
+		<symbol viewBox="0 0 192 512" id="angle-right" xmlns="http://www.w3.org/2000/svg"><path d="M166.9 264.5l-117.8 116c-4.7 4.7-12.3 4.7-17 0l-7.1-7.1c-4.7-4.7-4.7-12.3 0-17L127.3 256 25.1 155.6c-4.7-4.7-4.7-12.3 0-17l7.1-7.1c4.7-4.7 12.3-4.7 17 0l117.8 116c4.6 4.7 4.6 12.3-.1 17z"/></symbol>
+		<symbol viewBox="0 0 256 512" id="angle-up" xmlns="http://www.w3.org/2000/svg"><path d="M136.5 185.1l116 117.8c4.7 4.7 4.7 12.3 0 17l-7.1 7.1c-4.7 4.7-12.3 4.7-17 0L128 224.7 27.6 326.9c-4.7 4.7-12.3 4.7-17 0l-7.1-7.1c-4.7-4.7-4.7-12.3 0-17l116-117.8c4.7-4.6 12.3-4.6 17 .1z"/></symbol>
+		<symbol viewBox="0 0 448 512" id="arrow-left" xmlns="http://www.w3.org/2000/svg"><path d="M231.536 475.535l7.071-7.07c4.686-4.686 4.686-12.284 0-16.971L60.113 273H436c6.627 0 12-5.373 12-12v-10c0-6.627-5.373-12-12-12H60.113L238.607 60.506c4.686-4.686 4.686-12.284 0-16.971l-7.071-7.07c-4.686-4.686-12.284-4.686-16.97 0L3.515 247.515c-4.686 4.686-4.686 12.284 0 16.971l211.051 211.05c4.686 4.686 12.284 4.686 16.97-.001z"/></symbol>
+		<symbol viewBox="0 0 448 512" id="arrow-right" xmlns="http://www.w3.org/2000/svg"><path d="M216.464 36.465l-7.071 7.07c-4.686 4.686-4.686 12.284 0 16.971L387.887 239H12c-6.627 0-12 5.373-12 12v10c0 6.627 5.373 12 12 12h375.887L209.393 451.494c-4.686 4.686-4.686 12.284 0 16.971l7.071 7.07c4.686 4.686 12.284 4.686 16.97 0l211.051-211.05c4.686-4.686 4.686-12.284 0-16.971L233.434 36.465c-4.686-4.687-12.284-4.687-16.97 0z"/></symbol>
 		<symbol viewBox="0 0 12 9" id="check" xmlns="http://www.w3.org/2000/svg"><path d="M10.293.293a1 1 0 111.414 1.414l-7 7a1 1 0 01-1.414 0l-3-3a1 1 0 011.414-1.414L4 6.586 10.293.293z"/></symbol>
 		<symbol viewBox="0 0 16 16" id="close" xmlns="http://www.w3.org/2000/svg"><path d="M6.585 8L.293 1.707A1 1 0 011.707.293l6.291 6.292L14.29.293a1 1 0 011.414 1.414L9.412 8l6.292 6.293a1 1 0 01-1.414 1.414L7.998 9.415l-6.29 6.292a1 1 0 11-1.415-1.414L6.585 8z"/></symbol>
 </svg>
@@ -78,6 +86,50 @@ embedded above. They may be styled via CSS.
 			<h3>A) Inline SVG with embedded sprite</h3>
 			<ul>
 
+				<li title="angle-down">
+					<div class="icon-box">
+
+						<!-- angle-down -->
+						<svg class="svg-angle-down-dims">
+							<use xlink:href="#angle-down"></use>
+						</svg>
+
+					</div>
+					<h2>angle-down</h2>
+				</li>
+				<li title="angle-left">
+					<div class="icon-box">
+
+						<!-- angle-left -->
+						<svg class="svg-angle-left-dims">
+							<use xlink:href="#angle-left"></use>
+						</svg>
+
+					</div>
+					<h2>angle-left</h2>
+				</li>
+				<li title="angle-right">
+					<div class="icon-box">
+
+						<!-- angle-right -->
+						<svg class="svg-angle-right-dims">
+							<use xlink:href="#angle-right"></use>
+						</svg>
+
+					</div>
+					<h2>angle-right</h2>
+				</li>
+				<li title="angle-up">
+					<div class="icon-box">
+
+						<!-- angle-up -->
+						<svg class="svg-angle-up-dims">
+							<use xlink:href="#angle-up"></use>
+						</svg>
+
+					</div>
+					<h2>angle-up</h2>
+				</li>
 				<li title="arrow-left">
 					<div class="icon-box">
 
@@ -143,6 +195,50 @@ SVG sprite. They may be styled via CSS. (IE 9-11 with polyfill only)
 			<h3>B) Inline SVG with external sprite (IE 9-11 with polyfill only)</h3>
 			<ul>
 
+				<li title="angle-down">
+					<div class="icon-box">
+
+						<!-- angle-down -->
+						<svg class="svg-angle-down-dims">
+							<use xlink:href="../sprite.svg#angle-down"></use>
+						</svg>
+
+					</div>
+					<h2>angle-down</h2>
+				</li>
+				<li title="angle-left">
+					<div class="icon-box">
+
+						<!-- angle-left -->
+						<svg class="svg-angle-left-dims">
+							<use xlink:href="../sprite.svg#angle-left"></use>
+						</svg>
+
+					</div>
+					<h2>angle-left</h2>
+				</li>
+				<li title="angle-right">
+					<div class="icon-box">
+
+						<!-- angle-right -->
+						<svg class="svg-angle-right-dims">
+							<use xlink:href="../sprite.svg#angle-right"></use>
+						</svg>
+
+					</div>
+					<h2>angle-right</h2>
+				</li>
+				<li title="angle-up">
+					<div class="icon-box">
+
+						<!-- angle-up -->
+						<svg class="svg-angle-up-dims">
+							<use xlink:href="../sprite.svg#angle-up"></use>
+						</svg>
+
+					</div>
+					<h2>angle-up</h2>
+				</li>
 				<li title="arrow-left">
 					<div class="icon-box">
 
@@ -195,7 +291,7 @@ SVG sprite. They may be styled via CSS. (IE 9-11 with polyfill only)
 
 		</section>
 		<footer>
-			<p>Generated at Tue, 21 Jun 2022 13:17:54 GMT by <a href="https://github.com/svg-sprite/svg-sprite" target="_blank" rel="noopener noreferrer">svg-sprite</a>.</p>
+			<p>Generated at Thu, 04 Aug 2022 12:19:46 GMT by <a href="https://github.com/svg-sprite/svg-sprite" target="_blank" rel="noopener noreferrer">svg-sprite</a>.</p>
 		</footer>
 	</body>
 </html>

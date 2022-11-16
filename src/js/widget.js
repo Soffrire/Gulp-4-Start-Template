@@ -6,6 +6,8 @@ function pageWidget(pages) {
     $(
       `
         <li class='widget_item'><a class='widget_link' href='/img/sprite/symbol/sprite.symbol.html' target='_blank'>sprite</a></li>
+        <li class='widget_item'><a class='widget_link' href='/ui.html' target='_blank'>UI Kit</a></li>
+        <hr>
       `
     ).appendTo('.widget_list')
 
@@ -22,4 +24,4 @@ function pageWidget(pages) {
   widgetStyle.prependTo('.widget_wrap')
 }
 
-pageWidget(['ui', 'index'])
+pageWidget(['index'])
