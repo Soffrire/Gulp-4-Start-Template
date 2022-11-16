@@ -1,0 +1,10 @@
+.container {
+  max-width: var(--width-container);
+  width: 100%;
+  height: inherit;
+  margin: 0 auto;
+}
+
+.page {
+  flex: 1;
+}

@@ -1,17 +1,19 @@
-include ../helpers/_include
+include ../global/_include
 include ../templates/_include
 
 - var array = ''
+
 block vars
 
-doctype
-html(lang='ru' data-theme='default')
+doctype html
+html.js-document(lang='ru' data-theme='default')
 	head
 		+head(array)
 	body.body.js-body
-		include ../components/_svg-container
-		+header
+		+svg-container()
+		+header()
+
 		block content
-		+footer
-		+modals
-		+scripts
+
+		+footer()
+		+scripts()
