@@ -3,14 +3,14 @@
  * @String id - идентификатор модального окна.
  */
 window.openModal = id => {
-
+  console.log(id)
 }
 
 /**
  * Глобальная функция закрытия модального(-ных) окна(-он).
  */
 window.closeModal = () => {
-
+  return false
 }
 
 /**
@@ -20,8 +20,8 @@ window.closeModal = () => {
  * @param content
  */
 window.messageSuccess = (content = {}) => {
-  const title = content?.title || ''
-  const message = content?.message || ''
+  const title = content.title || ''
+  const message = content.message || ''
 
   $('.js-modal-success-title').html(title)
   $('.js-modal-success-message').html(message)
@@ -36,8 +36,8 @@ window.messageSuccess = (content = {}) => {
  * @param content
  */
 window.messageError = (content = {}) => {
-  const title = content?.title || ''
-  const message = content?.message || ''
+  const title = content.title || ''
+  const message = content.message || ''
 
   $('.js-modal-error-title').html(title)
   $('.js-modal-error-message').html(message)
@@ -76,9 +76,7 @@ class ModalGallery {
     this.eventListeners()
   }
 
-  eventListeners() {
-
-  }
+  eventListeners() {}
 }
 
 /**

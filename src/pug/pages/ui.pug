@@ -1,0 +1,58 @@
+extends ../layouts/_base
+
+block vars
+	- var array = {title:'Главная страница'}
+
+block content
+	main.page
+		.container
+
+			.ui
+				.ui-section
+					.ui-header
+						.ui-title Colors
+					.ui-content
+						.ui-content-title Basic colors
+						div Content
+						.ui-content-title Technical colors
+						div Content
+
+			//form.js-send-form(action='' name='form')
+			//
+			//	.input-group(data-input-group='checkbox')
+			//		label.checkbox
+			//			input.checkbox__input.js-consent-checkbox(type='checkbox' name='consent' checked)
+			//			span.checkbox__indicator
+			//				+icon('check', 'checkbox__icon')
+			//			span.checkbox__text
+			//				| Согласен за обработку
+			//				|
+			//				a(href='/' title='Перейти') персональных данных
+			//
+			//	button(type='submit') Отправить
+			//
+			//
+			//
+			//
+			//.select
+			//	.select__field
+			//		button.select__button(type='button')
+			//			span.select__selected Выберите из списка
+			//			+icon('chevron-right', 'select__icon')
+			//	.select__body
+			//		.select__list
+			//			label.checkbox
+			//				input.checkbox__input.js-consent-checkbox(type='checkbox' name='consent')
+			//				span.checkbox__indicator
+			//					+icon('check', 'checkbox__icon')
+			//				span.checkbox__text Значение 1
+			//			label.checkbox
+			//				input.checkbox__input.js-consent-checkbox(type='checkbox' name='consent')
+			//				span.checkbox__indicator
+			//					+icon('check', 'checkbox__icon')
+			//				span.checkbox__text Значение 2
+			//			label.checkbox
+			//				input.checkbox__input.js-consent-checkbox(type='checkbox' name='consent')
+			//				span.checkbox__indicator
+			//					+icon('check', 'checkbox__icon')
+			//				span.checkbox__text Значение 3

@@ -6,6 +6,6 @@ import './global/helpers'
 import './global/widget'
 
 document.addEventListener('DOMContentLoaded', () => {
-	initApp()
-	initBackendScripts()
+  initApp()
+  initBackendScripts()
 })

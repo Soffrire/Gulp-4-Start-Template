@@ -2,7 +2,21 @@ export default class FormSender {
   constructor($form) {
     this.$form = $form
     this.$submit = this.$form.find(`[type='submit']`)
-    this.$consentCheckbox = this.$form.find('.js-consent-checkbox')
+    this.$consentCheckbox = this.$form.find(`[name='consent']`)
+
+    this.eventListeners()
+  }
+
+  eventListeners() {
+    this.$consentCheckbox.closest('label').on('change', () => {
+      this.consentcheck()
+    })
+
+    this.$form.on('submit', () => {
+      this.sendRequest(this.$form)
+
+      return false
+    })
   }
 
   /**
@@ -29,18 +43,13 @@ export default class FormSender {
           })
         }
       })
-      .catch(error => {
-        const requestTitle = error.data.title
-        const requestMessage = error.data.message
-
+      .catch(() => {
         stopWindowPreloader()
 
-        if (requestTitle || requestMessage) {
-          messageError({
-            title: requestTitle,
-            message: requestMessage
-          })
-        }
+        messageSuccess({
+          title: 'Что-то пошло не так',
+          message: 'При отправке запроса произошла ошибка'
+        })
       })
   }
 
@@ -57,10 +66,10 @@ export default class FormSender {
    * Проверка активности на согласие с обработкой данных.
    */
   consentcheck() {
-    this.$consentCheckbox = !this.$consentCheckbox.prop('checked')
+    const isDisabled = !this.$consentCheckbox.prop('checked')
 
-    this.$consentCheckbox
-      ? this.$submit.removeAttr('disabled')
-      : this.$submit.attr('disabled', 'disabled')
+    isDisabled
+      ? this.$submit.attr('disabled', 'disabled')
+      : this.$submit.removeAttr('disabled')
   }
 }

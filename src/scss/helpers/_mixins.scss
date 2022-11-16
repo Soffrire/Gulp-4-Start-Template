@@ -10,12 +10,12 @@
   box-shadow: none;
 }
 
-@mixin transition($property: 'all', $duration: '.3s', $timing: 'ease', $delay) {
+@mixin transition($property: all, $duration: .3s, $timing: ease, $delay: inherit) {
   transition-property: $property;
   transition-duration: $duration;
   transition-timing-function: $timing;
 
-  @if ($delay) {
+  @if $delay != inherit {
     transition-delay: $delay;
   }
 }
@@ -48,11 +48,11 @@
   justify-content: center;
 }
 
-@mixin flex-column($gap) {
+@mixin flex-column($gap: 0) {
   display: flex;
   flex-direction: column;
 
-  @if ($gap) {
+  @if $gap != 0 {
     gap: $gap;
   }
 }

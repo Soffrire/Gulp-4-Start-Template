@@ -8,6 +8,7 @@
 
 
 html {
+  overflow-x: hidden;
   font-size: 62.5%;
 }
 
@@ -18,10 +19,12 @@ body {
 
 
 .body {
+  position: relative;
   font-family: var(--ff);
   color: var(--color-base);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   min-height: 100vh;
+  font-size: 1.4rem;
 }

@@ -5,11 +5,11 @@ mixin head(array)
 	link(href='/css/app.min.css' rel='stylesheet' media='all')
 
 mixin scripts()
-	script(src='/js/app.js')
+	script(src='/js/app.min.js')
 
 mixin icon(name, mod)
 	- name = name || ''
 	- mod = mod || ''
 
-	svg(class=`icon icon-${name} mod`)
+	svg(class=`icon icon-${name} ${mod}`)
 		use(xlink:href=`#${name}`)

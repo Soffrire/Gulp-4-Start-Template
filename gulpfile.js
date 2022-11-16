@@ -1,3 +1,4 @@
+// -------------------------------------------------- Plugins
 const gulp = require('gulp')
 const pump = require('pump')
 const del = require('del')
@@ -21,6 +22,7 @@ const vinylNamed = require('vinyl-named')
 const through2 = require('through2')
 const gulpBabel = require('gulp-babel')
 
+// -------------------------------------------------- Paths
 const srcPath = './src/'
 const buildPath = './build/'
 
@@ -38,7 +40,7 @@ const paths = {
   js: {
     src: `${srcPath}js/app.js`,
     output: `${buildPath}js/`,
-    watch: `${srcPath}/js/**`
+    watch: `${srcPath}js/**/*.*`
   },
   fonts: {
     src: `${srcPath}fonts/**/*.*`,
@@ -52,12 +54,12 @@ const paths = {
   },
   icons: {
     src: `${srcPath}media/icons/*.svg`,
-    output: `${srcPath}media/icons/`,
+    output: `${srcPath}media/sprite/`,
     watch: `${srcPath}media/icons/*.svg`
   }
 }
 
-// Supported Browsers
+// -------------------------------------------------- Supported Browsers
 const supportedBrowsers = [
   'last 3 versions', // http://browserl.ist/?q=last+3+versions
   'ie >= 10', // http://browserl.ist/?q=ie+%3E%3D+10
@@ -73,10 +75,41 @@ const supportedBrowsers = [
   'samsung >= 4' // http://browserl.ist/?q=samsung+%3E%3D+4
 ]
 
-// Config
+// -------------------------------------------------- Config
 const autoprefixConfig = { browsers: supportedBrowsers, cascade: false }
 const babelConfig = { targets: { browsers: supportedBrowsers } }
 
+// -------------------------------------------------- Cleaning
+const cleanMarkup = (mode) => () => {
+  return ['development', 'production'].includes(mode) ? del(`${paths.html.output}/*.html`) : undefined
+}
+
+const cleanMedia = (mode) => () => {
+  return ['development', 'production'].includes(mode) ? del(paths.media.output) : undefined
+}
+
+const cleanFonts = (mode) => () => {
+  return ['development', 'production'].includes(mode) ? del(paths.fonts.output) : undefined
+}
+
+const cleanStyles = (mode) => () => {
+  return ['development', 'production'].includes(mode) ? del(paths.css.output) : undefined
+}
+
+const cleanScripts = (mode) => () => {
+  return ['development', 'production'].includes(mode) ? del(paths.js.output) : undefined
+}
+
+const syncDirectories = (directory, file) => {
+  const currentFile = file.split(`src\\${directory}\\`)[1]
+
+  return del.sync([
+      `${buildPath}${directory}/${currentFile}`, // Удаление конкретного файла при остлеживании.
+      `${buildPath}${directory}/*/`], // Удаление пустых каталогов.
+    { force: true })
+}
+
+// -------------------------------------------------- Functions
 const buildMarkup = (mode) => (done) => {
   return ['development', 'production'].includes(mode)
     ? pump([
@@ -140,12 +173,16 @@ const buildStyles = (mode) => (done) => {
 const buildScripts = (mode) => (done) => {
   let streamMode
 
-  if (mode === 'development')
-    streamMode = require('./webpack/config.development.js')
-  else if (mode === 'production')
-    streamMode = require('./webpack/config.production.js')
-  else
-    streamMode = undefined
+  switch (mode) {
+    case 'development':
+      streamMode = require('./webpack/config.development.js')
+      break
+    case 'production':
+      streamMode = require('./webpack/config.production.js')
+      break
+    default:
+      streamMode = undefined
+  }
 
   return ['development', 'production'].includes(mode)
     ? pump([
@@ -153,6 +190,15 @@ const buildScripts = (mode) => (done) => {
       vinylNamed(),
       webpackStream(streamMode, webpack),
       sourcemaps.init({ loadMaps: true }),
+      plumber({
+        errorHandler: function(err) {
+          notify.onError({
+            title: 'JS Error',
+            message: 'Error: <%= error.message %>'
+          })(err)
+          this.emit('end')
+        }
+      }),
       through2.obj(function(file, enc, cb) {
         const isSourceMap = /\.map$/.test(file.path)
         if (!isSourceMap) this.push(file)
@@ -160,8 +206,13 @@ const buildScripts = (mode) => (done) => {
       }),
       gulpBabel({ presets: [['env', babelConfig]] }),
       ...((mode === 'production') ? [uglify()] : []),
+      rename({
+        suffix: '.min',
+        extname: '.js'
+      }),
       sourcemaps.write('./'),
       gulp.dest(paths.js.output)
+
     ], done)
     : undefined
 }
@@ -200,13 +251,37 @@ const buildIcons = (mode) => (done) => {
   return ['development', 'production'].includes(mode)
     ? pump([
       gulp.src(paths.icons.src),
+      svgo({
+        js2svg: {
+          pretty: true
+        },
+        removeTitle: true,
+        removeEmptyAttrs: true
+      }),
+      cheerio({
+        run: $ => {
+          $('[fill]').removeAttr('fill')
+          $('[stroke]').removeAttr('stroke')
+          $('[style]').removeAttr('style')
+        },
+        parserOptions: { xmlMode: true }
+      }),
+      replace('&gt;', '>'),
+      svgSprite({
+        mode: {
+          symbol: {
+            sprite: '../sprite.svg',
+            render: {
+              scss: {
+                template: srcPath + 'scss/helpers/_sprite_template.scss',
+                dest: '../../../scss/global/_sprite.scss'
+              }
+            },
+            example: true
+          }
+        }
+      }),
       gulp.dest(paths.icons.output)
-      // ...((mode === 'production')
-      // 	? pump([])
-      // 	: []),
-      // ...((mode === 'development')
-      // 	? pump([])
-      // 	: [])
     ], done)
     : undefined
 }
@@ -233,12 +308,27 @@ const genericTask = (mode, context = 'building') => {
   }
 
   const allBootingTasks = [
+    // Clean & Build Markup
+    Object.assign(cleanMarkup(mode), { displayName: `HTML: build - ${mode}` }),
     Object.assign(buildMarkup(mode), { displayName: `HTML: build - ${mode}` }),
+
+    // Clean & Build Styles
+    Object.assign(cleanStyles(mode), { displayName: `CSS: build - ${mode}` }),
     Object.assign(buildStyles(mode), { displayName: `CSS: build - ${mode}` }),
+
+    // Clean & Build Scripts
+    Object.assign(cleanScripts(mode), { displayName: `JS: build - ${mode}` }),
     Object.assign(buildScripts(mode), { displayName: `JS: build - ${mode}` }),
+
+    // Clean & Build Fonts
+    Object.assign(cleanFonts(mode), { displayName: `FONTS: build - ${mode}` }),
     Object.assign(buildFonts(mode), { displayName: `FONTS: build - ${mode}` }),
-    Object.assign(buildIcons(mode), { displayName: `ICONS: build - ${mode}` }),
-    Object.assign(buildMedia(mode), { displayName: `MEDIA: build - ${mode}` })
+
+    // Clean & Build Media and Icons
+    Object.assign(cleanMedia(mode), { displayName: `ICONS: build - ${mode}` }),
+    Object.assign(buildMedia(mode), { displayName: `MEDIA: build - ${mode}` }),
+
+    Object.assign(buildIcons(mode), { displayName: `ICONS: build - ${mode}` })
   ]
 
   const browserLoadingWatching = (done) => {
@@ -248,42 +338,24 @@ const genericTask = (mode, context = 'building') => {
     })
 
     gulp.watch(paths.html.watch).on('all', gulp.series(
-      Object.assign(
-        buildMarkup(mode),
-        {
-          displayName: `Watch HTML: Build - ${modeName}`
-        }),
-      browserSync.reload
-    ))
-
-    done()
+      Object.assign(cleanMarkup(mode), { displayName: `Clean HTML: Build - ${modeName}` }),
+      Object.assign(buildMarkup(mode), { displayName: `Watch HTML: Build - ${modeName}` }), browserSync.reload))
 
     gulp.watch(paths.css.watch).on('all', gulp.series(
-      Object.assign(
-        buildStyles(mode),
-        {
-          displayName: `Watch CSS: Build - ${modeName}`
-        }),
-      browserSync.reload
-    ))
+      Object.assign(cleanStyles(mode), { displayName: `Clean CSS: Build - ${modeName}` }),
+      Object.assign(buildStyles(mode), { displayName: `Watch CSS: Build - ${modeName}` }), browserSync.reload))
 
     gulp.watch(paths.js.watch).on('all', gulp.series(
-      Object.assign(
-        buildScripts(mode),
-        {
-          displayName: `Watch JS: Build - ${modeName}`
-        }),
-      browserSync.reload
-    ))
+      Object.assign(cleanScripts(mode), { displayName: `Clean JS: Build - ${modeName}` }),
+      Object.assign(buildScripts(mode), { displayName: `Watch JS: Build - ${modeName}` }), browserSync.reload))
 
-    gulp.watch(paths.media.watch).on('all', gulp.series(
-      Object.assign(
-        buildMedia(mode),
-        {
-          displayName: `Watch MEDIA: Build - ${modeName}`
-        }),
-      browserSync.reload
-    ))
+    gulp.watch(paths.media.watch)
+      .on('all', gulp.series(
+        Object.assign(cleanMedia(mode), { displayName: `Clean MEDIA: Build - ${modeName}` }),
+        Object.assign(buildMedia(mode), { displayName: `Watch MEDIA: Build - ${modeName}` }), browserSync.reload))
+      .on('unlink', (file) => syncDirectories('media', file))
+
+    done()
   }
 
   return [
@@ -292,12 +364,13 @@ const genericTask = (mode, context = 'building') => {
   ]
 }
 
+// -------------------------------------------------- Tasks
 exports.default = gulp.series(...genericTask('development', 'building'))
 exports.build = gulp.series(...genericTask('production', 'building'))
 
-// For assets on backend
+// -------------------------------------------------- For assets on backend
 exports.buildCss = gulp.series(buildStyles('production'))
 exports.buildJs = gulp.series(buildScripts('production'))
 
-// Build icons & svg-sprite
+// -------------------------------------------------- Build icons & svg-sprite
 exports.buildIcons = gulp.series(buildIcons('production'))

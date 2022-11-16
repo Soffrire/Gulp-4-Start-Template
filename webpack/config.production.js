@@ -1,7 +1,10 @@
 module.exports = {
-  mode: 'development',
-  devtool: 'inline-cheap-source-map',
   output: {
-    filename: 'app.js',
+    filename: 'app.min.js'
   },
+  optimization: {
+    minimize: false
+  },
+  mode: 'production',
+  devtool: 'hidden-source-map'
 };

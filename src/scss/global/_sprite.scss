@@ -1,0 +1,37 @@
+@use 'sass:math';
+
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+}
+
+#SVG_container {
+  position: absolute;
+  height: 0;
+  width: 0;
+}
+
+#SVG_container svg {
+  position: absolute;
+  height: 0;
+  width: 0;
+}
+
+  .icon-check {
+    font-size: math.div(48, 10)*1rem;
+    width: math.div(48, 48)*1em;
+  }
+  .icon-chevron-left {
+    font-size: math.div(48, 10)*1rem;
+    width: math.div(48, 48)*1em;
+  }
+  .icon-chevron-right {
+    font-size: math.div(48, 10)*1rem;
+    width: math.div(48, 48)*1em;
+  }
+  .icon-close {
+    font-size: math.div(48, 10)*1rem;
+    width: math.div(48, 48)*1em;
+  }

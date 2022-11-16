@@ -1,0 +1,32 @@
+.ui {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+
+  &-section {}
+
+  &-header {
+    padding: 30px;
+    background-color: #dceaf6;
+  }
+
+  &-title {
+    color: #000;
+    font-family: inherit;
+    font-size: 5rem;
+  }
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    padding: 0 30px 30px;
+    background-color: #fafafa;
+
+    &-title {
+      padding: 10px;
+      background-color: #dceaf6;
+      margin-bottom: 30px;
+      margin-top: 30px;
+    }
+  }
+}
