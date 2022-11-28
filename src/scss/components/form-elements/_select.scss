@@ -1,0 +1,74 @@
+.select {
+  $select: &;
+
+  position: relative;
+  width: fit-content;
+
+  &__button {
+    @include reset-button();
+    @include flex-justify();
+
+    gap: 10px;
+    padding: var(--padding-select);
+    background: var(--color-primary);
+    color: var(--color-white);
+
+    @include transition((box-shadow));
+  }
+
+  &__text {
+    font-size: var(--font-size-text-small);
+  }
+
+  &__icon {
+    font-size: var(--font-size-icon-small);
+
+    @include transition((transform));
+  }
+
+  &__body {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 100%;
+    width: fit-content;
+    background: var(--color-white);
+    box-shadow: var(--shadow-select);
+    transform: translateY(20px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    @include transition((transform, opacity, visibility));
+  }
+
+  &__list {
+    @include flex-column();
+
+    .radio,
+    .checkbox {
+      padding: var(--padding-select);
+    }
+  }
+
+  &.open {
+
+    #{$select} {
+
+      &__button {
+        box-shadow: var(--shadow-select);
+      }
+
+      &__body {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+        pointer-events: all;
+      }
+
+      &__icon {
+        transform: rotate(180deg);
+      }
+    }
+  }
+}

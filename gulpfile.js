@@ -134,8 +134,8 @@ const buildStyles = (mode) => (done) => {
   return ['development', 'production'].includes(mode)
     ? pump([
       gulp.src(paths.css.src),
+      ...((mode === 'development') ? [sourcemaps.init()] : []),
       gulpSass(),
-      sourcemaps.init(),
       plumber({
         errorHandler: function(err) {
           notify.onError({
@@ -149,23 +149,12 @@ const buildStyles = (mode) => (done) => {
         cascade: true,
         remove: false
       }),
-      sourcemaps.write(),
       rename({
         suffix: '.min',
         extname: '.css'
       }),
+      ...((mode === 'development') ? [sourcemaps.write()] : []),
       gulp.dest(paths.css.output)
-      // ...((mode === 'development') ? [
-      //   browserSync.reload({
-      //     stream: true
-      //   })
-      // ] : [])
-      // ...((mode === 'production')
-      // 	? pump([])
-      // 	: []),
-      // ...((mode === 'development')
-      // 	? pump([])
-      // 	: [])
     ], done)
     : undefined
 }

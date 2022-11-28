@@ -10,13 +10,32 @@ block content
 			.ui
 				.ui-section
 					.ui-header
-						.ui-title Colors
+						.ui-title Select
 					.ui-content
-						.ui-content-title Basic colors
-						div Content
-						.ui-content-title Technical colors
-						div Content
 
+						.select.js-select
+							button.select__button.js-select-button
+								span.select__text.js-select-current Выберите из списка
+								+icon('chevron-down', 'select__icon')
+							.select__body.js-select-body
+								.select__list
+									- for (var i = 0; i< 5; i++)
+										label.checkbox
+											input.checkbox__input(type='checkbox' name='select-item' value=`Значение ${i + 1}`)
+											span.checkbox__indicator
+												+icon('check', 'checkbox__icon')
+											span.checkbox__text= `Значение ${i + 1}`
+
+
+						- var cols = 0
+						.grid-columns
+							while cols < 4
+								p= cols++
+
+						- var cols_9 = 0
+						.grid-columns.grid-columns--9
+							while cols_9 < 9
+								p= cols_9++
 			//form.js-send-form(action='' name='form')
 			//
 			//	.input-group(data-input-group='checkbox')

@@ -4,3 +4,22 @@
   font-style: inherit;
   font-size: inherit;
 }
+
+
+// info: Секции на сайте где текстовый контент будет генерироваться из редактором административной панели,
+//  где для тегов не предусмотрено наличие классов, идетефикаторов и прочего.
+.typography {
+  font-family: var(--font-family);
+
+  strong {
+    font-weight: bold;
+  }
+
+  p {
+    font-size: 1.4rem;
+  }
+
+  small {
+    font-size: 1rem;
+  }
+}

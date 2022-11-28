@@ -3,6 +3,7 @@
   outline: none;
   box-shadow: none;
   background: none;
+  cursor: pointer;
 }
 
 @mixin reset-input() {
@@ -48,6 +49,12 @@
   justify-content: center;
 }
 
+@mixin flex-center-column() {
+  @include flex-center();
+
+  flex-direction: column;
+}
+
 @mixin flex-column($gap: 0) {
   display: flex;
   flex-direction: column;
@@ -57,13 +64,58 @@
   }
 }
 
-@mixin flex-justify($align: center) {
+@mixin flex-justify($align: center, $gap: 0) {
   display: flex;
   align-items: $align;
   justify-content: space-between;
+
+  @if $gap != 0 {
+    gap: $gap;
+  }
 }
 
 @mixin pseudo($content: '', $pos: 'absolute') {
   content: $content;
   position: $pos;
+}
+
+@mixin trim-string() {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin trim-lines($lines: 3) {
+  @supports (-webkit-line-clamp: $lines) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: initial;
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+  }
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin cover-background() {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+@mixin absolute-center($z-index: 1, $left: 50%) {
+  position: absolute;
+  top: 50%;
+  left: $left;
+  z-index: $z-index;
+
+  @if ($left == 50%) {
+    transform: translate(-50%, -50%);
+  }
+  @else {
+    transform: translate(-50%, 0);
+  }
 }

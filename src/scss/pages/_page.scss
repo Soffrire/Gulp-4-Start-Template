@@ -1,0 +1,6 @@
+.page {
+  flex: 1;
+
+  background: url($pathMedia + '1.jpg');
+  @include cover-background();
+}

@@ -20,11 +20,12 @@ body {
 
 .body {
   position: relative;
-  font-family: var(--ff);
+  font-family: var(--font-family);
   color: var(--color-base);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   min-height: 100vh;
   font-size: 1.4rem;
+  line-height: 1.3;
 }

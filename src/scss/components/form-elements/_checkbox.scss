@@ -24,6 +24,7 @@
   }
 
   &__text {
+    white-space: nowrap;
     user-select: none;
     color: var(--color-base);
     font-size: var(--font-size-text-small);
