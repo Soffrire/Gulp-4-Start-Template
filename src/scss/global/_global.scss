@@ -1,8 +1,14 @@
+$debug: false;
+
 * {
   box-sizing: border-box;
 
   &:focus {
     outline: none;
+  }
+
+  @if ($debug) {
+    border: 1px dashed red;
   }
 }
 

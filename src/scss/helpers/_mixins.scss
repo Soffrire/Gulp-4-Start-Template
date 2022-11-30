@@ -16,7 +16,7 @@
   transition-duration: $duration;
   transition-timing-function: $timing;
 
-  @if $delay != inherit {
+  @if ($delay != inherit) {
     transition-delay: $delay;
   }
 }
@@ -77,12 +77,6 @@
 @mixin pseudo($content: '', $pos: 'absolute') {
   content: $content;
   position: $pos;
-}
-
-@mixin trim-string() {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 @mixin trim-lines($lines: 3) {

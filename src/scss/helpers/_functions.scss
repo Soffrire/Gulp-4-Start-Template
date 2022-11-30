@@ -1,0 +1,56 @@
+@use "sass:list";
+
+$screens: 1920, 1440, 1280, 1024, 960, 768, 560, 475, 320;
+
+@each $screen in $screens {
+  @include max-screen(#{$screen}px) {
+    :root {
+      --w-scale: 100vw / #{$screen};
+    }
+  }
+}
+
+@function w-scale($size) {
+  @return calc(var(--w-scale) * #{$size})
+}
+
+.block {
+  width: 100%;
+  height: 300px;
+  background: var(--color-white);
+}
+
+@function grid($media) {
+  $grids: null;
+
+  @if ($media == 1280) {
+    $grids: '2' 4;
+  }
+
+  @if ($media == 768) {
+    $grids: '2' 2;
+  }
+
+  @return $grids;
+}
+
+.grid {
+  display: grid;
+  gap: 30px;
+
+  @include max-screen(1280px) {
+    $grids: grid(1280);
+
+    &--#{nth($grids, 1)} {
+      grid-template-columns: repeat(nth($grids, 2), 1fr);
+    }
+  }
+
+  @include max-screen(768px) {
+    $grids: grid(768);
+
+    &--#{nth($grids, 1)} {
+      grid-template-columns: repeat(nth($grids, 2), 1fr);
+    }
+  }
+}
