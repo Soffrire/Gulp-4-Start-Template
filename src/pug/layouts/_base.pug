@@ -1,7 +1,7 @@
 include ../global/_include
 include ../templates/_include
 
-- var array = ''
+- var array = null
 
 block vars
 
@@ -9,7 +9,7 @@ doctype html
 html.js-document(lang='ru' data-theme='default')
 	head
 		+head(array)
-	body.body.js-body
+	body.body.js-body(class=array.class ? `page-${array.class}`: 'page-main')
 		+svg-container()
 		+header()
 

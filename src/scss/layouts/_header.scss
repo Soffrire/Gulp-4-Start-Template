@@ -1,10 +1,32 @@
 .header {
   @supports (position: sticky) {
     position: sticky;
+    top: 0;
   }
 
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  z-index: var(--zindex-header);
+  background: var(--color-white);
+  box-shadow: var(--shadow-header);
+
+  &__inner {
+    @include flex-justify(center, 30px);
+    max-width: var(--width-container);
+    width: 100%;
+    height: var(--height-header);
+
+    @include m-auto();
+    @include transition((padding-left, padding-right));
+
+    @media (max-width: 1440px) {
+      padding-left: var(--padding-gutter);
+      padding-right: var(--padding-gutter);
+    }
+  }
+
+  .menu {
+    height: 100%;
+  }
 }

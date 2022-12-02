@@ -18,12 +18,14 @@ const pagesWidget = pages => {
   pages.forEach(page => {
     $(`
       <li class='widget__item'>
-        <a class='widget__link' href='/${page}.html' target='_blank'>${page}</a>
+        <a class='widget__link' href='/${page}.html'>${page}</a>
       </li>
     `).appendTo('.widget__list')
   })
 }
 
 pagesWidget([
-  'index'
+  'index',
+  'news',
+  'articles',
 ])

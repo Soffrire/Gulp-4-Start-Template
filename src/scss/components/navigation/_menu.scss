@@ -1,0 +1,48 @@
+.menu {
+  width: fit-content;
+
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: inherit;
+  }
+
+  &__item {
+    height: inherit;
+    display: flex;
+  }
+
+  &__link {
+    position: relative;
+
+    @include flex-center();
+    @include transition(color, .4s, ease-in-out);
+
+    &:after {
+      @include pseudo();
+      bottom: 0;
+      right: 0;
+      height: w-scale(3);
+      width: 0;
+      opacity: 0;
+      background: var(--color-primary);
+      @include transition((width, left, right, opacity))
+    }
+
+    &:hover {
+      color: var(--color-primary);
+
+      &:after {
+        opacity: 1;
+        width: 100%;
+        left: 0;
+        right: unset;
+      }
+    }
+  }
+}

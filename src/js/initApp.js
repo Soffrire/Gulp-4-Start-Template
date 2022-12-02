@@ -6,13 +6,13 @@ import Select from './classes/Forms/Select'
 const initApp = () => {
   window.$body = $('.js-body')
 
-  $('.js-send-form').each(function() {
-    new FormSender($(this))
-  })
+  document
+    .querySelectorAll('.js-send-form')
+    .forEach(form => new FormSender(form))
 
-  $('.js-select').each(function() {
-    new Select($(this), 'checkbox', null)
-  })
+  document
+    .querySelectorAll('.js-select')
+    .forEach(select => new Select(select, 'checkbox', null))
 
   /**
    * Инициализация слайдеров

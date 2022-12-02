@@ -1,3 +1,20 @@
+mixin site-logo()
+	.site-logo
+		a.site-logo__link(href='/') Example
+
 mixin header()
 	header.header
-		.container
+		.header__inner
+			+site-logo()
+
+			nav.menu
+				ul.menu__list
+					li.menu__item
+						a.menu__link(href='/') menu item
+					li.menu__item
+						a.menu__link(href='/') menu item
+					li.menu__item
+						a.menu__link(href='/') menu item
+					li.menu__item
+						a.menu__link(href='/') menu item
+

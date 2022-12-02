@@ -6,10 +6,14 @@
   cursor: pointer;
 }
 
+
+
 @mixin reset-input() {
   outline: none;
   box-shadow: none;
 }
+
+
 
 @mixin transition($property: all, $duration: .3s, $timing: ease, $delay: inherit) {
   transition-property: $property;
@@ -20,6 +24,8 @@
     transition-delay: $delay;
   }
 }
+
+
 
 @mixin custom-scrollbar($size, $foreground-color, $background-color: mix($foreground-color, white,  50%)) {
   // For Google Chrome
@@ -43,11 +49,15 @@
   }
 }
 
+
+
 @mixin flex-center() {
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
+
 
 @mixin flex-center-column() {
   @include flex-center();
@@ -55,29 +65,37 @@
   flex-direction: column;
 }
 
+
+
 @mixin flex-column($gap: 0) {
   display: flex;
   flex-direction: column;
 
-  @if $gap != 0 {
+  @if ($gap != 0) {
     gap: $gap;
   }
 }
+
+
 
 @mixin flex-justify($align: center, $gap: 0) {
   display: flex;
   align-items: $align;
   justify-content: space-between;
 
-  @if $gap != 0 {
+  @if ($gap != 0) {
     gap: $gap;
   }
 }
 
-@mixin pseudo($content: '', $pos: 'absolute') {
+
+
+@mixin pseudo($content: '', $pos: absolute) {
   content: $content;
   position: $pos;
 }
+
+
 
 @mixin trim-lines($lines: 3) {
   @supports (-webkit-line-clamp: $lines) {
@@ -94,11 +112,15 @@
   text-overflow: ellipsis;
 }
 
+
+
 @mixin cover-background() {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
 }
+
+
 
 @mixin absolute-center($z-index: 1, $left: 50%) {
   position: absolute;
@@ -112,4 +134,11 @@
   @else {
     transform: translate(-50%, 0);
   }
+}
+
+
+
+@mixin m-auto() {
+  margin-right: auto;
+  margin-left: auto;
 }

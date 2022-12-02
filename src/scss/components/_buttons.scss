@@ -1,3 +1,15 @@
 .btn {
   @include reset-button();
+
+  &:hover:not(:disabled) {}
+
+  &:disabled {}
+
+  &:visited {}
+
+  &:focus {}
+
+  &:default {}
+
+  &:empty {}
 }
